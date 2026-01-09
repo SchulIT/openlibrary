@@ -18,6 +18,8 @@ interface CheckoutRepositoryInterface {
 
     public function countActive(): int;
 
+    public function countOverdue(DateTime $today): int;
+
     public function countAll(): int;
 
     /**
@@ -25,6 +27,7 @@ interface CheckoutRepositoryInterface {
      * @param DateTime|null $start
      * @param DateTime|null $end
      * @param bool $onlyActive
+     * @param string|null $query
      * @return PaginatedResult<Checkout>
      */
     public function find(PaginationQuery $paginationQuery, ?DateTime $start = null, ?DateTime $end = null, bool $onlyActive = false, ?string $query = null): PaginatedResult;

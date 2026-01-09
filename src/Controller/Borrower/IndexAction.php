@@ -5,6 +5,7 @@ namespace App\Controller\Borrower;
 use App\Entity\BorrowerType;
 use App\Repository\BorrowerRepositoryInterface;
 use App\Repository\PaginationQuery;
+use App\Security\Voter\BorrowerVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -20,6 +21,8 @@ class IndexAction extends AbstractController {
         #[MapQueryParameter(filter: FILTER_DEFAULT, flags: FILTER_FLAG_EMPTY_STRING_NULL | FILTER_NULL_ON_FAILURE)] string|null $grade = null,
         #[MapQueryParameter(name: 'type', flags: FILTER_NULL_ON_FAILURE )] BorrowerType|null $borrowerType = null
     ): Response {
+        $this->denyAccessUnlessGranted(BorrowerVoter::LIST);
+
         $borrowers = $borrowerRepository->find(new PaginationQuery(page: $page), $borrowerType !== null ? [ $borrowerType ] : BorrowerType::cases(), $grade, $query);
         $grades = $borrowerRepository->findAllGrades();
 

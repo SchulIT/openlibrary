@@ -4,11 +4,98 @@
 
 {% block breadcrumb %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">{{ 'dashboard.menu'|trans }}</li>
+        <li class="breadcrumb-item active">{{ 'dashboard.menu'|trans }}</li>
     </ol>
 {% endblock %}
 
 {% block content %}
+    {% if is_granted('ROLE_BOOKS_ADMIN') or is_granted('ROLE_LENDER') %}
+        <div class="row row-cols-1 row-cols-sm-{{ statistics|length }} g-4 mb-4 d-none d-sm-flex">
+            {% for statistic in statistics %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ statistic.translationKey|trans }}</h5>
+                            <p class="display-6">
+                                {{ statistic.count }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if is_granted('ROLE_LENDER') %}
+        <div class="row row-cols-1 row-cols-sm-2 g-4 mb-4 d-sm-flex">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ 'dashboard.search.borrower'|trans }}</h5>
+
+                        <form action="{{ path('admin_borrowers') }}" method="get">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-barcode"></i>
+                                </span>
+
+                                <input class="form-control" type="text" name="query" placeholder="{{ 'dashboard.search.borrower_placeholder'|trans }}">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ 'dashboard.search.book'|trans }}</h5>
+
+                        <form action="{{ path('admin_books') }}" method="get">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-barcode"></i>
+                                </span>
+
+                                <input class="form-control" type="text" name="query" placeholder="{{ 'dashboard.search.book_placeholder'|trans }}">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card-body">
+            <h5 class="card-title">{{ 'dashboard.search.book'|trans }}</h5>
+
+            <form action="{{ path('browse') }}" method="get">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-barcode"></i>
+                    </span>
+
+                    <input class="form-control" type="text" name="q" placeholder="{{ 'dashboard.search.book_placeholder'|trans }}">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    {% if borrowers|length == 0 %}
+        <div class="bs-callout bs-callout-info">
+            <h5>{{ 'info.label'|trans }}</h5>
+            <p>{{ 'dashboard.empty_borrowers'|trans }}</p>
+        </div>
+    {% endif %}
+
     {% for borrower in borrowers %}
         {% set activeCheckoutForBorrower = [ ] %}
 

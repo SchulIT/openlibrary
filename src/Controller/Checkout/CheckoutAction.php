@@ -5,6 +5,7 @@ namespace App\Controller\Checkout;
 use App\Checkout\BulkCheckoutRequest;
 use App\Checkout\CheckoutManager;
 use App\Form\BulkCheckoutType;
+use App\Security\Voter\CheckoutVoter;
 use App\Settings\CheckoutSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,8 @@ class CheckoutAction extends AbstractController {
         Request $request,
         ClockInterface $clock
     ): Response {
+        $this->denyAccessUnlessGranted(CheckoutVoter::CHECKOUT_ANY);
+
         $bulkCheckoutRequest = new BulkCheckoutRequest();
         $bulkCheckoutRequest->expectedEnd = DateTime::createFromImmutable($clock->now()->modify(sprintf('+%d days', $checkoutSettings->defaultCheckoutDurationInDays)));
 

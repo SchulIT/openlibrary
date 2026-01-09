@@ -65,4 +65,13 @@ class BookRepository extends AbstractTransactionalRepository implements BookRepo
         $this->em->remove($book);
         $this->flushIfNotInTransaction();
     }
+
+    #[Override]
+    public function countAll(): int {
+        return $this->em->createQueryBuilder()
+            ->select('COUNT(b)')
+            ->from(Book::class, 'b')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

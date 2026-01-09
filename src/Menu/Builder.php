@@ -2,8 +2,11 @@
 
 namespace App\Menu;
 
+use App\Security\Voter\BookVoter;
 use App\Security\Voter\BorrowerVoter;
+use App\Security\Voter\CategoryVoter;
 use App\Security\Voter\CheckoutVoter;
+use App\Security\Voter\LabelVoter;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -30,7 +33,7 @@ readonly class Builder {
         ])
             ->setExtra('icon', 'fa fa-book');
 
-        if($this->authorizationChecker->isGranted(CheckoutVoter::CheckoutAny)) {
+        if($this->authorizationChecker->isGranted(CheckoutVoter::LIST)) {
             $menu->addChild('checkouts.menu', [
                 'route' => 'checkouts'
             ])
@@ -42,24 +45,28 @@ readonly class Builder {
                 ->setExtra('icon', 'fa fa-reply');
         }
 
-        $menu->addChild('borrowers.menu', [
-            'route' => 'admin_borrowers'
-        ])
-            ->setExtra('icon', 'fa fa-users');
+        if($this->authorizationChecker->isGranted(BorrowerVoter::LIST)) {
+            $menu->addChild('borrowers.menu', [
+                'route' => 'admin_borrowers'
+            ])
+                ->setExtra('icon', 'fa fa-users');
+        }
 
-        if($this->authorizationChecker->isGranted('ROLE_CATEGORIES_ADMIN')) {
+        if($this->authorizationChecker->isGranted(CategoryVoter::LIST)) {
             $menu->addChild('categories.menu', [
                 'route' => 'admin_categories'
             ])
                 ->setExtra('icon', 'fa fa-list');
         }
 
-        if($this->authorizationChecker->isGranted('ROLE_BOOKS_ADMIN')) {
+        if($this->authorizationChecker->isGranted(BookVoter::LIST)) {
             $menu->addChild('books.menu', [
                 'route' => 'admin_books'
             ])
                 ->setExtra('icon', 'fa fa-book-open');
+        }
 
+        if($this->authorizationChecker->isGranted(LabelVoter::LIST)) {
             $menu->addChild('labels.menu', [
                 'route' => 'labels'
             ])

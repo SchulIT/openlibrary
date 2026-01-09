@@ -5,6 +5,7 @@ namespace App\Controller\Label;
 use App\Entity\LabelTemplate;
 use App\Form\LabelTemplateType;
 use App\Repository\LabelRepositoryInterface;
+use App\Security\Voter\LabelVoter;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ class EditAction extends AbstractController {
 
     #[Route('/labels/{uuid}/edit', name: 'edit_label')]
     public function __invoke(#[MapEntity(mapping: ['uuid' => 'uuid'])] LabelTemplate $label, Request $request, LabelRepositoryInterface $labelRepository): Response {
-        $this->denyAccessUnlessGranted('ROLE_BOOKS_ADMIN');
+        $this->denyAccessUnlessGranted(LabelVoter::EDIT, $label);
 
         $form = $this->createForm(LabelTemplateType::class, $label);
         $form->handleRequest($request);

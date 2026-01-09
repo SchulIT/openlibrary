@@ -5,7 +5,7 @@
 {% block breadcrumb %}
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
-        <li class="breadcrumb-item">{{ 'books.menu'|trans }}</li>
+        <li class="breadcrumb-item active">{{ 'books.menu'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -110,7 +110,7 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     {% endif %}
-                                    {% if is_granted('remove', book) %}
+                                    {% if is_granted('delete', book) %}
                                         <a href="#" class="btn btn-outline-danger btn-sm">
                                             <i class="fas fa-trash"></i>
                                         </a>

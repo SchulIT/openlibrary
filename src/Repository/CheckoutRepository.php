@@ -99,4 +99,16 @@ class CheckoutRepository extends AbstractRepository implements CheckoutRepositor
 
         return PaginatedResult::fromQueryBuilder($qb, $paginationQuery);
     }
+
+    #[Override]
+    public function countOverdue(DateTime $today): int {
+        return $this->em->createQueryBuilder()
+            ->select('COUNT(c.id)')
+            ->from(Checkout::class, 'c')
+            ->where('c.end IS NULL')
+            ->andwhere('c.expectedEnd <= :today')
+            ->setParameter('today', $today)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

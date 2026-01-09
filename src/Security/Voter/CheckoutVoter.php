@@ -11,9 +11,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class CheckoutVoter extends Voter {
 
-    public const string CheckoutAny = 'checkout-any';
-    public const string Edit = 'edit';
-    public const string Remove = 'remove';
+    public const string LIST = 'list-checkouts';
+    public const string CHECKOUT_ANY = 'checkout-any';
+    public const string EDIT = 'edit';
+    public const string DELETE = 'delete';
 
     public function __construct(
         private readonly AccessDecisionManagerInterface $accessDecisionManager
@@ -23,20 +24,22 @@ class CheckoutVoter extends Voter {
 
     #[Override]
     protected function supports(string $attribute, mixed $subject): bool {
-        return $attribute === self::CheckoutAny
-            || ($subject instanceof Checkout && in_array($attribute, [ self::Edit, self::Remove]));
+        return $attribute === self::CHECKOUT_ANY
+            || $attribute === self::LIST
+            || ($subject instanceof Checkout && in_array($attribute, [ self::EDIT, self::DELETE]));
     }
 
     #[Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool {
         switch($attribute) {
-            case self::CheckoutAny:
+            case self::CHECKOUT_ANY:
+            case self::LIST:
                 $this->accessDecisionManager->decide($token, ['ROLE_LENDER']);
 
-            case self::Edit:
+            case self::EDIT:
                 return $this->accessDecisionManager->decide($token, ['ROLE_LENDER']);
 
-            case self::Remove:
+            case self::DELETE:
                 return $this->accessDecisionManager->decide($token, ['ROLE_ADMIN']);
         }
 

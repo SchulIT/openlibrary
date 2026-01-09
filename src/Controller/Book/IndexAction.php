@@ -5,6 +5,7 @@ namespace App\Controller\Book;
 use App\Repository\BookRepositoryInterface;
 use App\Repository\CategoryRepositoryInterface;
 use App\Repository\PaginationQuery;
+use App\Security\Voter\BookVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -21,6 +22,8 @@ class IndexAction extends AbstractController {
         #[MapQueryParameter(filter: FILTER_DEFAULT, flags: FILTER_FLAG_EMPTY_STRING_NULL | FILTER_NULL_ON_FAILURE)] string|null $query = null,
         #[MapQueryParameter(name: 'category', filter: FILTER_DEFAULT, flags: FILTER_FLAG_EMPTY_STRING_NULL | FILTER_NULL_ON_FAILURE)] string|null $categoryId = null,
     ): Response {
+        $this->denyAccessUnlessGranted(BookVoter::LIST);
+
         $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), $query);
         $categories = $categoryRepository->findAll();
         $category = null;

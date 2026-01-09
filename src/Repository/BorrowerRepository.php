@@ -118,4 +118,13 @@ class BorrowerRepository extends AbstractTransactionalRepository implements Borr
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    #[Override]
+    public function countAll(): int {
+        return $this->em->createQueryBuilder()
+            ->select('COUNT(b)')
+            ->from(Borrower::class, 'b')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

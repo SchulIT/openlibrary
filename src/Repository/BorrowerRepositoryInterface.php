@@ -38,6 +38,8 @@ interface BorrowerRepositoryInterface extends TransactionalRepositoryInterface {
      */
     public function findAllByEmailOrBarcodeIds(array $emailsOrBarcodeIds): array;
 
+    public function countAll(): int;
+
     public function persist(Borrower $person): void;
 
     public function remove(Borrower $person): void;

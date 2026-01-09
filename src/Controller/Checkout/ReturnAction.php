@@ -7,6 +7,7 @@ namespace App\Controller\Checkout;
 use App\Checkout\BulkReturnRequest;
 use App\Checkout\CheckoutManager;
 use App\Form\BulkReturnType;
+use App\Security\Voter\CheckoutVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,8 @@ class ReturnAction extends AbstractController {
         Request $request,
         CheckoutManager $checkoutManager
     ): Response {
+        $this->denyAccessUnlessGranted(CheckoutVoter::CHECKOUT_ANY);
+
         $bulkReturnRequest = new BulkReturnRequest();
         $form = $this->createForm(BulkReturnType::class, $bulkReturnRequest);
         $form->handleRequest($request);

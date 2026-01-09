@@ -23,6 +23,8 @@ interface BookRepositoryInterface extends TransactionalRepositoryInterface {
      */
     public function findAll(): array;
 
+    public function countAll(): int;
+
     public function persist(Book $book): void;
 
     public function remove(Book $book): void;

@@ -20,7 +20,9 @@ class EditCheckoutAction extends AbstractController {
         Request $request,
         CheckoutRepositoryInterface $checkoutRepository
     ): Response {
-        $this->denyAccessUnlessGranted(CheckoutVoter::Edit, $checkout);
+        $this->denyAccessUnlessGranted(CheckoutVoter::EDIT, $checkout);
+
+        $this->denyAccessUnlessGranted(CheckoutVoter::EDIT, $checkout);
 
         $form = $this->createForm(CheckoutType::class, $checkout);
         $form->handleRequest($request);

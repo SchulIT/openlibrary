@@ -12,6 +12,21 @@ menu:
 dashboard:
     menu: Übersicht
 
+    empty_borrowers: Mit diesem Benutzer ist kein Ausleihkonto verknüpft.
+
+    statistic:
+        checkouts: Anzahl Ausleihen
+        active_checkouts: Aktive Ausleihen
+        overdue_checkouts: Überfällige Rückgaben
+        borrowers: Anzahl Entleiher
+        books: Anzahl Bücher
+
+    search:
+        borrower: Entleiher suchen
+        borrower_placeholder: Barcode scannen oder Namen eingeben
+        book: Buch suchen
+        book_placeholder: ISBN, Barcode oder Namen scannen oder eingeben
+
     checkouts:
         active:
             title: "Aktive Ausleihen für %lastname%, %firstname%"

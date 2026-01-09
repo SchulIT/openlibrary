@@ -101,7 +101,7 @@
                     </div>
 
                     {% set canEdit = is_granted('edit', borrower) %}
-                    {% set canRemove = is_granted('remove', borrower) %}
+                    {% set canRemove = is_granted('delete', borrower) %}
 
                     {% if canEdit or canRemove %}
                         <div class="card-footer">

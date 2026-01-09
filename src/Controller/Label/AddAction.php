@@ -5,6 +5,7 @@ namespace App\Controller\Label;
 use App\Entity\LabelTemplate;
 use App\Form\LabelTemplateType;
 use App\Repository\LabelRepositoryInterface;
+use App\Security\Voter\LabelVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class AddAction extends AbstractController {
 
     #[Route('/labels/add', name: 'add_label')]
     public function __invoke(Request $request, LabelRepositoryInterface $labelRepository): Response {
-        $this->denyAccessUnlessGranted('ROLE_BOOKS_ADMIN');
+        $this->denyAccessUnlessGranted(LabelVoter::NEW);
 
         $label = new LabelTemplate();
         $form = $this->createForm(LabelTemplateType::class, $label);

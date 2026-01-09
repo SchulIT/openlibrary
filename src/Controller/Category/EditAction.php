@@ -6,6 +6,7 @@ use App\Book\Shelfmark\Generator;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepositoryInterface;
+use App\Security\Voter\CategoryVoter;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,8 @@ class EditAction extends AbstractController {
         Generator $generator,
         Request $request
     ): Response {
+        $this->denyAccessUnlessGranted(CategoryVoter::EDIT, $category);
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 

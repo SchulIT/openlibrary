@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class BorrowerVoter extends Voter {
 
+    public const string LIST = 'list-borrowers';
     public const string NEW = 'new-borrower';
     public const string SHOW = 'show';
     public const string EDIT = 'edit';
@@ -24,12 +25,13 @@ class BorrowerVoter extends Voter {
     protected function supports(string $attribute, mixed $subject): bool {
         return $attribute === self::NEW
             || $attribute === self::IMPORT
+            || $attribute === self::LIST
             || (in_array($attribute, [self::EDIT, self::DELETE, self::SHOW]) && $subject instanceof Borrower);
     }
 
     #[Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool {
-        if($attribute === self::SHOW) {
+        if($attribute === self::SHOW || $attribute === self::LIST) {
             return $this->accessDecisionManager->decide($token, ['ROLE_LENDER']);
         }
 

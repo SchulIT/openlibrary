@@ -4,6 +4,7 @@ namespace App\Controller\Label;
 
 use App\Entity\LabelTemplate;
 use App\Repository\LabelRepositoryInterface;
+use App\Security\Voter\LabelVoter;
 use SchulIT\CommonBundle\Form\ConfirmType;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ class RemoveAction extends AbstractController {
 
     #[Route('/labels/{uuid}/remove', name: 'remove_label')]
     public function __invoke(#[MapEntity(mapping: ['uuid' => 'uuid'])] LabelTemplate $label, Request $request, LabelRepositoryInterface $labelRepository): Response {
-        $this->denyAccessUnlessGranted('ROLE_BOOKS_ADMIN');
+        $this->denyAccessUnlessGranted(LabelVoter::DELETE, $label);
 
         $form = $this->createForm(ConfirmType::class, [], [
             'message' => 'labels.remove.confirm',

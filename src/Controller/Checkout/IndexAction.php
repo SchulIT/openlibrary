@@ -5,6 +5,7 @@ namespace App\Controller\Checkout;
 use App\Http\ValueResolver\MapDateTimeQueryParameter;
 use App\Repository\CheckoutRepositoryInterface;
 use App\Repository\PaginationQuery;
+use App\Security\Voter\CheckoutVoter;
 use DateTime;
 use DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,7 @@ class IndexAction extends AbstractController {
         #[MapDateTimeQueryParameter] DateTime|null $start = null,
         #[MapDateTimeQueryParameter] DateTime|null $end = null,
     ): Response {
+        $this->denyAccessUnlessGranted(CheckoutVoter::LIST);
         $checkouts = $checkoutRepository->find(new PaginationQuery(page: $page, limit: $limit), start: $start, end: $end, query: $query);
 
         return $this->render('checkout/index.html.twig', [
