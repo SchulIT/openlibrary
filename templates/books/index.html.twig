@@ -1,0 +1,151 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'books.menu'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item">{{ 'books.menu'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex">
+                    <div class="flex-fill">
+                        <form method="get" class="row row-cols-lg-auto g-1 align-items-center">
+                            <div class="col">
+                                <select class="form-select form-select-sm" name="limit" data-trigger="submit">
+                                    {% for number in [25, 50, 100, 150, 200, 250] %}
+                                        <option value="{{ number }}" {% if limit == number %}selected{% endif %}>{{ 'books.limit'|trans({'%count%': number}) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <input type="text" class="form-control form-control-sm" name="query" placeholder="{{ 'books.search'|trans }}" value="{{ query }}">
+                            </div>
+
+                            <div class="col">
+                                <select class="form-select form-select-sm" name="category" data-trigger="submit">
+                                    <option value="">{{ 'books.category'|trans }}</option>
+                                    {% for c in categories %}
+                                        <option value="{{ c.abbreviation }}" {% if category != null and c.id == category.id %} selected{% endif %}>{{ c.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="actions">
+                        {% if is_granted('new-book') %}
+                            <a href="{{ path('admin_books_add') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> {{ 'books.add.label'|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if books|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped card-table">
+
+                        <thead>
+                        <tr>
+                            <th>{{ 'books.barcode_id.label'|trans }}</th>
+                            <th>{{ 'books.cover.label'|trans }}</th>
+                            <th>{{ 'books.title'|trans }}</th>
+                            <th>{{ 'books.series.label'|trans }}</th>
+                            <th>{{ 'books.isbn.label'|trans }}</th>
+                            <th>{{ 'books.shelfmark.label'|trans }}</th>
+                            <th>{{ 'books.category'|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for book in books %}
+                            <tr>
+                                <td class="align-middle">
+                                    {{ book.barcodeId }}
+                                </td>
+                                <td class="align-middle">
+                                    {% if book.coverFileName is not empty %}
+                                        <img src="{{ vich_uploader_asset(book, 'cover') }}" style="max-height: 50px; max-width: 50px;">
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {{ book.title }}
+
+                                    {% if book.subtitle is not empty %}
+                                        <div class="text-muted">{{ book.subtitle }}</div>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {% if book.series is not empty %}
+                                        {{ book.series }}
+                                    {% else %}
+                                        <span class="badge text-bg-secondary">{{ 'empty'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {{ book.isbn }}
+                                </td>
+                                <td class="align-middle">
+                                    {{ book.shelfmark }}
+                                </td>
+                                <td class="align-middle">
+                                    {{ book.category.name }}
+                                </td>
+                                <td class="align-middle">
+                                    {% if is_granted('show', book) %}
+                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-magnifying-glass"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if is_granted('edit', book) %}
+                                        <a href="{{ path('admin_books_edit', { uuid: book.uuid }) }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if is_granted('remove', book) %}
+                                        <a href="#" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex">
+                        <div class="flex-fill align-self-center">
+                            {{ 'books.count'|trans({'%count%': books.totalCount}) }}
+                        </div>
+
+                        <div class="ms-auto">
+                            {% include '@Common/includes/pagination.html.twig' with {
+                                currentFilters: {
+                                    uuid: category != null ? category.abbreviation : null,
+                                    limit: limit,
+                                    query: query
+                                },
+                                currentPage: books.page,
+                                paginationPath: 'admin_books',
+                                lastPage: books.totalPages,
+                                showAlwaysFirstAndLast: true
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'books.menu'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item">{{ 'books.menu'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex">
+                    <div class="flex-fill">
+                        <form method="get" class="row row-cols-lg-auto g-1 align-items-center">
+                            <div class="col">
+                                <select class="form-select form-select-sm" name="limit" data-trigger="submit">
+                                    {% for number in [25, 50, 100, 150, 200, 250] %}
+                                        <option value="{{ number }}" {% if limit == number %}selected{% endif %}>{{ 'books.limit'|trans({'%count%': number}) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <input type="text" class="form-control form-control-sm" name="query" placeholder="{{ 'books.search'|trans }}" value="{{ query }}">
+                            </div>
+
+                            <div class="col">
+                                <select class="form-select form-select-sm" name="category" data-trigger="submit">
+                                    <option value="">{{ 'books.category'|trans }}</option>
+                                    {% for c in categories %}
+                                        <option value="{{ c.abbreviation }}" {% if category != null and c.id == category.id %} selected{% endif %}>{{ c.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="actions"></div>
+                </div>
+            </div>
+
+            {% if books|length > 0 %}
+                <div class="list-group list-group-flush">
+                    {% for book in books %}
+                        <div class="list-group-item">
+                            <div class="d-flex">
+                                <div class="me-2">
+                                    {% if book.coverFileName is not empty %}
+                                        <img src="{{ vich_uploader_asset(book, 'cover') }}" class="img-fluid rounded-start" alt="{{ book.title }}" style="max-width: 60px;">
+                                    {% else %}
+                                        <svg height="600" width="400" role="img" preserveAspectRatio="xMidYMid slice" class="img-fluid" style="max-width:60px;">
+                                            <rect width="100%" height="100%" fill="#868e96"></rect>
+
+                                            <svg x="25%" y="0" width="50%" fill="#dee3e6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free v6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+                                        </svg>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-fill">
+                                    <h5 class="card-title">
+                                        {{ book.title }}
+
+                                        <span class="badge text-bg-primary">{{ book.barcodeId }}</span>
+
+                                        {% set status = checkoutStatus[book.id] %}
+
+                                        {% if status.value == 'available' %}
+                                            <span class="badge text-bg-success">{{ status|trans }}</span>
+                                        {% else %}
+                                            <span class="badge text-bg-warning">{{ status|trans }}</span>
+                                        {% endif %}
+                                    </h5>
+                                    {% if book.subtitle is not empty %}
+                                        <h6 class="card-subtitle">{{ book.subtitle }}</h6>
+                                    {% endif %}
+
+                                    <div class="authors">
+                                        {% for author in book.authors %}
+                                            {{ author }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="badges">
+                                        <span class="badge text-bg-secondary">
+                                            <i class="fas fa-barcode"></i> {{ book.isbn }}
+                                        </span>
+
+                                        <span class="badge text-bg-secondary">
+                                            <i class="fas fa-tag"></i> {{ book.category.name }}
+                                        </span>
+
+                                        {% if book.series is not null %}
+                                            <span class="badge text-bg-secondary">
+                                                {{ book.series }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="card-footer border-top-0">
+                        <div class="d-flex">
+                            <div class="flex-fill align-self-center">
+                                {{ 'books.count'|trans({'%count%': books.totalCount}) }}
+                            </div>
+
+                            <div class="ms-auto">
+                                {% include '@Common/includes/pagination.html.twig' with {
+                                    currentFilters: {
+                                        category: category != null ? category.abbreviation : null,
+                                        limit: limit,
+                                        query: query
+                                    },
+                                    currentPage: books.page,
+                                    paginationPath: 'browse',
+                                    lastPage: books.totalPages,
+                                    showAlwaysFirstAndLast: true
+                                } only %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+            {% endif %}
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

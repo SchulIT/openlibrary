@@ -1,0 +1,11 @@
+roles:
+    ROLE_SUPER_ADMIN: Globaler Administrator
+    ROLE_ADMIN: Administrator
+    ROLE_LENDER: Ausleiher
+    ROLE_BOOKS_ADMIN: Bücher-Verwalter
+
+role_attribute:
+    display_name: Bücherei-Rollen
+    description: Rollen in der Bücherei-Software
+
+description: Zentrale Verwaltung der Schülerbücherei.

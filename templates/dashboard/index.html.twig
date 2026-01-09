@@ -1,0 +1,83 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'dashboard.menu'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">{{ 'dashboard.menu'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {% for borrower in borrowers %}
+        {% set activeCheckoutForBorrower = [ ] %}
+
+        {% if activeCheckouts[borrower.id] is defined %}
+            {% set activeCheckoutForBorrower = activeCheckouts[borrower.id] %}
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                {{ 'dashboard.checkouts.active.title'|trans({'%firstname%' : borrower.firstname, '%lastname%': borrower.lastname}) }}
+                <span class="badge text-bg-primary badge-pill">{{ activeCheckoutForBorrower|length }}</span>
+            </div>
+
+            <div class="list-group list-group-flush">
+                {% for checkout in activeCheckoutForBorrower %}
+                    {% set book = checkout.book %}
+                    <a class="list-group-item list-group-item-action" href="{{ path('show_book', { uuid: book.uuid }) }}">
+                        <div class="d-flex">
+                            {% if book.coverFilename is not empty %}
+                                <img src="{{ app.request.getSchemeAndHttpHost() }}/covers/{{ book.coverFilename }}" class="img-fluid rounded me-2" style="height: 100px;" alt="{{ book.title }}">
+                            {% endif %}
+
+                            <div class="flex-fill">
+                                <h5 class="d-block mb-0">
+                                    {{ book.title }}
+
+
+                                    <span class="badge text-bg-secondary">{{ book.barcodeId }}</span>
+                                </h5>
+                                {% if book.subtitle is not empty %}
+                                    <h6 class="text-muted">{{ book.subtitle }}</h6>
+                                {% endif %}
+
+                                {% if book.series is not empty %}
+                                    <p class="text-muted mb-1">{{ book.series }}</p>
+                                {% endif %}
+
+                                <p class="mb-1">
+                                    <i class="fas fa-user"></i> {{ book.authors|join(', ') }}
+                                </p>
+
+                                <p class="text-muted mb-1">
+                                    <i class="fas fa-barcode"></i> {{ book.isbn }}
+                                </p>
+
+                                <p class="mb-1">
+                                    <span class="start">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <i class="fas fa-arrow-right"></i>
+
+                                        {{ checkout.start|format_date }}
+                                    </span>
+
+                                    <span class="end">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <i class="fas fa-exclamation"></i>
+
+                                        {{ checkout.expectedEnd|format_date }}
+
+                                        {% if checkout.expectedEnd < date() %}
+                                            <span class="badge text-bg-danger">{{ 'dashboard.checkouts.active.overdue'|trans }}</span>
+                                        {% endif %}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

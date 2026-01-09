@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Settings;
+
+use Jbtronics\SettingsBundle\ParameterTypes\IntType;
+use Jbtronics\SettingsBundle\Settings\Settings;
+use Jbtronics\SettingsBundle\Settings\SettingsParameter;
+use Jbtronics\SettingsBundle\Settings\SettingsTrait;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[Settings]
+class CheckoutSettings {
+    use SettingsTrait;
+
+    #[SettingsParameter(label: 'checkouts.settings.duration.label', description: 'checkouts.settings.duration.help', formType: IntType::class)]
+    #[Assert\GreaterThan(0)]
+    public int $defaultCheckoutDurationInDays = 30;
+}

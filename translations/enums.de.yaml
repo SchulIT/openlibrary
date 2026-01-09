@@ -1,0 +1,10 @@
+checkout_status:
+  available: verfügbar
+  not_available: nicht verfügbar
+  checked_out: ausgeliehen
+
+borrower_type:
+  student: Schüler/Schülerin
+  teacher: Lehrkraft
+  other: Andere
+

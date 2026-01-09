@@ -1,0 +1,295 @@
+common:
+    created_at:  Erstellt am
+    created_by: Erstellt von
+    updated_at: Aktualisiert am
+    updated_by: Aktualisiert von
+
+menu:
+    sections:
+        library: Bücherei
+        borrowers: Ausleiher
+
+dashboard:
+    menu: Übersicht
+
+    checkouts:
+        active:
+            title: "Aktive Ausleihen für %lastname%, %firstname%"
+            overdue: Abgabe überfällig
+
+books:
+    menu: Bücher
+
+    count: "%count% Bücher"
+    limit: "%count% Bücher"
+    views:
+        table: Tabelle
+        grid: Gitter
+    search: Buch suchen...
+
+    tabs:
+        general: Allgemeine Daten
+        library: Bücherei-spezifisch
+        changes: Protokoll
+
+    title: Titel
+    barcode_id:
+        label: Barcode
+        help: Dieser Barcode wird zur Suche innerhalb der Bibliothek genutzt. In der Regel eine Kombination aus dem Jahr und einer fortlaufenden Nummer.
+    subtitle:
+        label: Untertitel
+        help: Optional.
+    series:
+        label: Reihe
+        help: Optional. Nur den Reihennamen ohne die Nummerierung innerhalb des Bandes eintragen.
+    publisher:
+        label: Verlag
+        help: Optional. Dienst zu Anzeige- und Filter-Zwecken.
+    category: Kategorie
+    topic:
+        label: Themengebiet
+        help: Optional. Gibt das Themengebiet (bspw. bei Sachbüchern) an.
+    shelfmark:
+        label: Signatur
+        help: Der Wert "automatisch" generiert einen Wert automatisch.
+        strategies:
+            author:
+                label: Author
+                help: Wähle die ersten N Buchstaben des Nachnamens des zuerst genannten Authors als Signautur. Die Anzahl der Buchstaben ist im Parameter anzuegeben. Der Wert 0 bedeutet, dass der gesamte Nachname genutzt wird.
+            category:
+                label: Kategoriename
+                help: Wähle den Kategorienamen als Signatur aus. Ein Parameter wird nicht benötigt und ein Wert wird ignoriert.
+            topic:
+                label: Themengebiet
+                help: Wählt das Themengebiet als Signatur aus. Ein Parameter wird nicht benötigt und ein Wert wird ignoriert.
+    cover:
+        label: Cover
+    isbn:
+        label: ISBN-Nummer
+        help: ISBN13-Nummer eintragen
+    authors:
+        label: Autoren
+        help: Jeden Autor bitte einzeln einpflegen.
+    year:
+        label: Jahr
+        help: Optional. Dient zu Anzeige- und Filter-Zwecken.
+    comment:
+        label: Kommentar
+        help: Optional. Freitext-Kommentar zum Buch, der nur auf der Detailansicht eines Buches für Bücherei-Verwalter sichtbar ist.
+    borrowable:
+        label: ausleihbar
+        help: Wenn diese Option aktiv, können Ausleihen für dieses Buch getätigt werden. Ist diese Option nicht aktiv, wird dies auf der Online-Übersicht für Ausleiher entsprechend angezeigt und eine Ausleihe verhinder.
+    listed:
+        label: gelistet
+        help: Wenn diese Option aktiv ist, wird das Buch in der Online-Übersicht für Ausleiher angezeigt.
+    inventory_date:
+        label: Datum der letzten Inventur
+        help: Nur für interne Zwecke. Hier kann das Datum der letzten Inventur des Buches angegeben werden.
+    price:
+        label: Preis
+        help: Optional.
+    receipt_date:
+        label: Rechnungsdatum
+        help: Optional.
+
+    metadata:
+        label: Metadaten herunterladen
+        error: Fehler beim Herunterladen der Metadaten.
+        not_supported: Für dieses Buch können keine Metadaten heruntergeladen werden.
+        success: Metadaten erfolgreich aktualisiert.
+
+    add:
+        label: Neues Buch
+        success: Buch erfolgreich hinzugefügt
+
+    edit:
+        label: Buch bearbeiten
+        success: Buch erfolgreich aktualisiert
+
+    remove:
+        label: Buch löschen
+        success: Buch erfolgreich gelöscht
+
+    import:
+        label: Bücher importieren
+        submit: Importieren
+        csv:
+            label: CSV-Datei
+            help: Die einzulesende CSV-Datei mit allen Büchern, die importiert werden sollen. Die CSV-Datei benötigt eine Kopfzeile mit den unten angegeben Überschriften.
+        delimiter: Trennzeichen
+        date_format:
+            label: Datumsformat
+            help: "Gibt das Datumsformat an, in dem die Datumswerte in der CSV-Datei notiert sind. Formate wie in der PHP-Dokumentation: https://www.php.net/manual/en/datetime.format.php"
+        headers:
+            id:
+                label: Nummer-Spalte
+                help: Überschrift in der CSV-Datei, die die eindeutige und fortlaufende Nummer des Buches angibt.
+            authors:
+                label: Autoren-Spalte
+                help: Überschrift in der CSV-Datei, in der die Autoren notiert sind (Felder dürfen auch leer sein).
+            title:
+                label: Titel-Spalte
+                help: Überschrift in der CSV-Datei, in der der Titel notiert ist.
+            subtitle:
+                label: Untertitel-Spalte
+                help: Überschrift in der CSV-Datei, in der der Untertitel notiert ist (Felder dürfen auch leer sein).
+            series:
+                label: Reihe-Spalte
+                help: Überschrift in der CSV-Datei, in der die Buchreihe notiert ist (Felder dürfen auch leern sein).
+            category:
+                label: Kategorie-Spalte
+                help: Überschrift in der CSV-Datei, in der die Kategorie notiert ist. Hier wird das Kürzel der Kategorie erwartet.
+            inventory_date:
+                label: Inventurdatum-Spalte
+                help: Optional. Überschrift in der CSV-Datei, in der das Datum der letzten Inventur gespeichert ist. Bei leeren Feldern wird der Wert nicht gesetzt.  Wenn keine Überschrift angegeben wird, wird das Datum der letzten Inventur nicht importiert.
+            receipt_date:
+                label: Eingangsdatum-Spalte
+                help: Überschrift in der CSV-Datei, in der das Eingangsdatum notiert ist.
+            updated_at:
+                label: Letzte Änderung-Spalte
+                help: Optional. Überschrift in der CSV-Datei, in der das Datum der letzten Änderung notiert ist. Bei leeren Feldern wird der Wert nicht gesetzt. Wenn keine Überschrift angegeben wird, wird das Datum der letzten Änderung nicht importiert.
+
+browse:
+    menu: Bücher suchen
+
+categories:
+    menu: Kategorien
+    count: '%count% Kategorien'
+
+    name: Name
+    abbreviation: Kürzel
+    shelfmark_generator:
+        label: Signatur
+        choose: Strategie auswählen
+        help: Legt die Strategie fest, nach der die Signatur automatisch generiert wird.
+
+        parameter:
+            label: Parameter
+            help: Optional. Manche Strategien erlauben die Angabe eines Parameters. Dieser kann hier eingetragen werden.
+
+    add:
+        label: Neue Kategorie
+        success: Kategorie erfolgreich hinzugefügt
+
+    edit:
+        label: Kategorie bearbeiten
+        success: Kategorie erfolgreich aktualisiert
+
+    remove:
+        label: Kategorie löschen
+        success: Kategorie erfolgreich gelöscht
+        error:
+            in_use: Es gibt noch Bücher, die dieser Kategorie zugeordnet sind. Bitte zunächst für diese Bücher eine neue Kategorie auswäheln.
+
+
+
+borrowers:
+    menu: Ausleiher
+    count: '%count% Ausleiher'
+
+    type: Art
+    firstname: Vorname
+    lastname: Nachname
+    email: E-Mail-Adresse
+    grade:
+        label: Klasse
+        help: Optional. Die Klasse wird nur zu Filterzwecken gespeichert.
+    barcode_id:
+        label: Barcode ID
+        help: Diese ID wird zur Identifikation bei der Ausleihe genutzt. Die ID kann bspw. die ID des Schülerausweises oder das Kürzel der Lehrkraft sein.
+    import:
+        label: Ausleiher importieren
+        csv:
+            label: CSV-Datei
+            help: Eine CSV-Datei mit den Spalten ID, Vorname, Nachname und E-Mail-Adresse. Optional auch mit der Spalte Klasse.
+        type:
+            label: Art
+            placeholder: Art auswählen
+        delimiter: Trennzeichen
+        submit: Importieren
+        success: "Es wurden %added% Ausleiher hinzugefügt, %updated% aktualisiert und %removed% gelöscht. %notRemoved% Ausleiher konnten aufgrund aktiver Ausleihen nicht gelöscht werden."
+        remove:
+            label: Nicht vorhandene Ausleiher löschen
+            help: Alle Ausleiher, die nicht in der CSV-Datei enthalten sind, werden aus dem System gelöscht. Falls noch Ausleihen aktiv sind, wird der Ausleiher nicht gelöscht.
+
+    checkouts:
+        label: Ausleihen
+        empty: Es gibt keine Ausleihen im System für den ausgewählten Entleiher.
+
+    add:
+        label: Neuer Ausleiher
+        success: Ausleiher erfolgreich hinzugefügt
+
+    edit:
+        label: Ausleiher bearbeiten
+        success: Ausleiher erfolgreich aktualisiert
+
+    remove:
+        label: Ausleiher löschen
+        success: Ausleiher erfolgreich gelöscht
+
+users:
+    singular: Benutzer
+    plural: Benutzer
+    menu: Benutzer
+
+    username: Benutzername
+    firstname: Vorname
+    lastname: Nachname
+    email: E-Mail-Adresse
+    associated_borrowers: Assoziierte Ausleiher
+
+
+
+checkouts:
+    menu: Ausleihen
+    count: '%count% Ausleihen'
+
+    borrower: Entleiher
+    borrower_removed: Entleiher gelöscht
+    books: Bücher
+    book: Buch
+    start: Beginn
+    expected_end: Erwartete Rückgabe
+    end: Ende
+    end_open: nicht zurückgegeben
+    comment: Kommentar
+
+    overdue: Rückgabe überfällig
+    late_return: Verspätete Rückgabe (%count% Tag(e))
+    checked_out: noch ausgeliehen
+
+    add:
+        label: Neue Ausleihe
+
+
+    tabs:
+        general: Ausleihe
+        changes: Protokoll
+
+returns:
+    menu: Rücknahme
+    books: Bücher
+    success: Bücher erfolgreich zurückgenommen
+
+filter:
+    choose:
+        borrower_type: Typ auswählen
+        grade: Klasse auswählen
+        category: Kategorie auswählen
+
+    query:
+        borrower: Ausleiher suchen
+        category: Kategorie suchen
+
+actions:
+    add: Hinzufügen
+    save: Speichern
+    remove: Löschen
+    checkout: Ausgeben
+    return: Zurücknehmen
+
+administration:
+    menu: Verwaltung
+
+empty: leer

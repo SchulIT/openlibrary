@@ -1,0 +1,21 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+lightsaml_sp:
+    resource: "@LightSamlSpBundle/Resources/config/routing.yml"
+    prefix: saml
+
+composer:
+    resource: "@ComposerDependencyListBundle/Controller"
+    type: attribute
+    prefix: /dependencies
+
+logout:
+    path: /logout
+
+logout_success:
+    path: /logout/success
+    defaults: { _controller: SchulIT\CommonBundle\Controller\LogoutController::logout }

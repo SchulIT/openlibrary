@@ -1,0 +1,119 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ borrower }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('admin_borrowers') }}">{{ 'borrowers.menu'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-md-9">
+                {% if borrower.checkouts|length == 0 %}
+                    <div class="bs-callout bs-callout-info mt-0">
+                        <h5>{{ 'info.label'|trans }}</h5>
+                        <p>{{ 'borrowers.checkouts.empty'|trans }}</p>
+                    </div>
+                {% else %}
+                    <div class="card">
+                        <div class="card-header">{{ 'borrowers.checkouts.label'|trans }}</div>
+
+                        <div class="list-group list-group-flush">
+                            {% for checkout in borrower.checkouts %}
+                                {% set isOverdue = checkout.end is null and checkout.expectedEnd < today %}
+                                <div class="list-group-item {% if isOverdue %}list-group-item-danger{% endif %}">
+                                    <div class="d-flex">
+                                        <div class="me-2">
+                                            {% if checkout.book.coverFileName is not empty %}
+                                                <img src="{{ vich_uploader_asset(checkout.book, 'cover') }}" class="img-fluid rounded-start" alt="{{ checkout.book.title }}" style="max-width: 60px;">
+                                            {% else %}
+                                                <svg height="600" width="400" role="img" preserveAspectRatio="xMidYMid slice" class="img-fluid" style="max-width:60px;">
+                                                    <rect width="100%" height="100%" fill="#868e96"></rect>
+
+                                                    <svg x="25%" y="0" width="50%" fill="#dee3e6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free v6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+                                                </svg>
+                                            {% endif %}
+                                        </div>
+                                        <div class="flex-fill">
+                                            <h5 class="card-title">
+                                                {{ checkout.book.title }}
+
+                                                <span class="badge text-bg-primary">{{ checkout.book.barcodeId }}</span>
+                                            </h5>
+
+                                            <div>
+                                                <div class="mb-1">
+                                                    <i class="far fa-calendar-alt text-muted"></i> <i class="fas fa-arrow-right text-muted"></i> {{ checkout.createdAt|format_date }}
+                                                </div>
+
+                                                <div class="mb-1">
+                                                    <i class="far fa-calendar-alt text-muted"></i> <i class="fas fa-arrow-left text-muted"></i>
+
+                                                    {% if checkout.end is null %}
+                                                        <span class="badge text-bg-success">{{ 'checkouts.checked_out'|trans }}</span>
+                                                    {% else %}
+                                                        {{ checkout.end|format_date }}
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="mb-1">
+                                                    <span class="text-muted">{{ 'checkouts.expected_end'|trans }}</span>
+
+                                                    {{ checkout.expectedEnd|format_date }}
+
+                                                    {% if isOverdue %}
+                                                        <span class="badge text-bg-danger">{{ 'checkouts.overdue'|trans }}</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">{{ borrower.lastname }}, {{ borrower.firstname }}</div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <i class="fas fa-barcode text-muted"></i> {{ borrower.barcodeId }}
+                        </div>
+                        <div class="mb-2">
+                            <i class="fas fa-tag text-muted"></i> {{ borrower.type|trans }}
+                        </div>
+                        {% if borrower.grade is not empty %}
+                            <div class="mb-2">
+                                <i class="fas fa-user-graduate"></i> {{ borrower.grade }}
+                            </div>
+                        {% endif %}
+                        <div class="mb-2">
+                            <i class="fas fa-envelope text-muted"></i> {{ borrower.email }}
+                        </div>
+                    </div>
+
+                    {% set canEdit = is_granted('edit', borrower) %}
+                    {% set canRemove = is_granted('remove', borrower) %}
+
+                    {% if canEdit or canRemove %}
+                        <div class="card-footer">
+                            {% if canEdit %}
+                                <a href="{{ path('edit_borrower', { uuid: borrower.uuid }) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

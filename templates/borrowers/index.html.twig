@@ -1,0 +1,150 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ 'borrowers.menu'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex flex-wrap mt-n2">
+                <div class="flex-fill mt-2">
+                    <form method="get" class="row row-cols-lg-auto g-1 align-items-center">
+                        <div class="col">
+                            <select class="form-select form-select-sm" data-trigger="submit" name="type">
+                                <option value="">{{ 'filter.choose.borrower_type'|trans }}</option>
+                                {% for type in types %}
+                                    <option value="{{ type.value }}" {% if type == selectedType %}selected{% endif %}>{{ type|trans }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <select class="form-select form-select-sm" data-trigger="submit" name="grade">
+                                <option value="">{{ 'filter.choose.grade'|trans }}</option>
+                                {% for grade in grades %}
+                                    <option value="{{ grade }}" {% if selectedGrade == grade %}selected{% endif %}>{{ grade }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <input class="form-control form-control-sm" type="text" name="query" placeholder="{{ 'filter.query.borrower'|trans }}" value="{{ query }}">
+                        </div>
+
+                        {% if selectedType != null or selectedGrade != null or query is not empty %}
+                            <div class="col">
+                                <a href="{{ path('admin_borrowers') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-times-circle"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+
+                <div class="ms-auto mt-2 d-flex align-items-center">
+                    {% if is_granted('import-borrowers') %}
+                        <a href="{{ path('import_borrowers') }}" class="btn btn-outline-primary btn-sm me-2">
+                            <i class="fas fa-upload"></i> {{ 'borrowers.import.label'|trans }}
+                        </a>
+                    {% endif %}
+                    {% if is_granted('new-borrower') %}
+                        <a href="{{ path('add_borrower') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> {{ 'borrowers.add.label'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+
+        </div>
+
+        {% if borrowers|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped card-table">
+                    <colgroup>
+                        <col class="column-sm">
+                        <col class="column-md">
+                        <col>
+                        <col>
+                        <col class="column-sm">
+                        <col class="column-md">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ 'borrowers.barcode_id.label'|trans }}</th>
+                        <th>{{ 'borrowers.lastname'|trans }}</th>
+                        <th>{{ 'borrowers.firstname'|trans }}</th>
+                        <th>{{ 'borrowers.grade.label'|trans }}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for borrower in borrowers %}
+                        <tr>
+                            <td class="align-middle">
+                                <span class="badge text-bg-primary" title="{{ borrower.type.name }}">
+                                    {{ borrower.type.name|first|upper }}
+                                </span>
+                            </td>
+                            <td class="align-middle">
+                                {{ borrower.barcodeId }}
+                            </td>
+                            <td class="align-middle">
+                                {{ borrower.lastname }}
+                            </td>
+                            <td class="align-middle">
+                                {{ borrower.firstname }}
+                            </td>
+                            <td class="align-middle">
+                                {{ borrower.grade }}
+                            </td>
+                            <td>
+                                {% if is_granted('show', borrower) %}
+                                    <a href="{{ path('show_borrower', { uuid: borrower.uuid }) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-magnifying-glass"></i>
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('edit', borrower) %}
+                                    <a href="{{ path('edit_borrower', { uuid: borrower.uuid }) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        <div class="card-footer">
+            <div class="d-flex">
+                <div class="flex-fill align-self-center">
+                    {{ 'borrowers.count'|trans({'%count%': borrowers.totalCount}) }}
+                </div>
+
+                <div class="ms-auto">
+                    {% include '@Common/includes/pagination.html.twig' with {
+                        currentFilters: {
+                            query: query,
+                            grade: selectedGrade,
+                            type: selectedType
+                        },
+                        currentPage: borrowers.page,
+                        lastPage: borrowers.totalPages,
+                        paginationPath: 'admin_borrowers',
+                        showAlwaysFirstAndLast: true
+                    } %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ 'books.edit.label'|trans }}{% endblock %}
+
+{% block post_javascript %}
+    <script src="{{ asset('build/collection.js') }}"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('admin_books') }}">{{ 'books.menu'|trans }}</a></li>
+        <li class="breadcrumb-item">{{ book.title }} <span class="badge text-bg-primary">{{ book.barcodeId }}</span></li>
+        <li class="breadcrumb-item active">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="card">
+        <div class="card-header">{{ 'books.tabs.general'|trans }}</div>
+        <div class="card-body">
+            {{ form_row(form.barcodeId) }}
+            {{ form_row(form.isbn) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.subtitle) }}
+            {{ form_row(form.series) }}
+
+            {{ form_row(form.publisher) }}
+            {{ form_row(form.year) }}
+            {{ form_row(form.comment) }}
+            {{ form_row(form.cover) }}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">{{ 'books.authors.label'|trans }}</div>
+        <div class="card-body">
+            <p>{{ 'books.authors.help'|trans }}</p>
+
+            <div class="authors" data-collection="authors" data-prototype="{{ form_widget(form.authors.vars.prototype)|e('html_attr') }}" data-id="{{ form.authors.vars.id }}">
+                {% for author in form.authors %}
+                    {{ form_widget(author) }}
+                {% endfor %}
+            </div>
+
+            {{ form_errors(form.authors) }}
+
+            {% do form.authors.setRendered %}
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-outline-primary btn-sm btn-add" type="button" data-collection="authors">
+                <i class="fa fa-plus"></i> {{ 'actions.add'|trans }}
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">{{ 'books.tabs.library'|trans }}</div>
+        <div class="card-body">
+            {{ form_row(form.category) }}
+            {{ form_row(form.topic) }}
+            {{ form_row(form.shelfmark) }}
+            {{ form_row(form.isBorrowable) }}
+            {{ form_row(form.isListed) }}
+            {{ form_row(form.receiptDate) }}
+            {{ form_row(form.price) }}
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-save"></i> {{ 'actions.save'|trans }}
+        </button>
+
+        <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left"></i> {{ 'actions.cancel'|trans }}
+        </a>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

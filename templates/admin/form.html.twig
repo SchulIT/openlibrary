@@ -1,0 +1,36 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block content_title %}{{ header|trans }}{% endblock %}
+{% block page_actions %}
+    <button class="btn btn-primary action-save" type="submit" value="save" data-action-name="save" onclick="document.{{ form.vars.name }}.submit();">
+        <span class="btn-label"><span class="action-label">{{ action|trans }}</span></span>
+    </button>
+{% endblock %}
+
+{% block main %}
+    {% if validationException is not null %}
+        <div class="alert alert-danger mb-2" role="alert">
+            <div>
+                <span class="fw-bold">ID</span> {{ validationException.id }}
+            </div>
+            <div>
+                <ul class="list-unstyled">
+                {% for violation in validationException.violations %}
+                    <li class="mb-1">
+                        <span class="fw-bold">{{ violation.message }}</span>
+                        {{ violation.invalidValue }}
+
+                        <span class="text-muted">{{ violation.propertyPath }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
