@@ -1,0 +1,70 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'labels.menu'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.label'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ 'labels.menu'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+
+        <div class="card">
+            <div class="card-header d-flex">
+                <div class="filter flex-fill"></div>
+
+                <div class="actions ms-auto">
+                    <a href="{{ path('download_pdf_labels') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> {{ 'labels.download.label'|trans }}
+                    </a>
+
+                    <a href="{{ path('add_label') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> {{ 'labels.add.label'|trans }}
+                    </a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover card-table">
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col class="column-140">
+                    </colgroup>
+
+                    <thead>
+                    <tr>
+                        <td>{{ 'labels.name'|trans }}</td>
+                        <td>{{ 'labels.description'|trans }}</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for label in labels %}
+                        <tr>
+                            <td class="align-middle">
+                                {{ label.name }}
+                            </td>
+                            <td class="align-middle">
+                                {{ label.description }}
+                            </td>
+                            <td>
+                                <a href="{{ path('edit_label', { uuid: label.uuid })}}" class="btn btn-outline-primary btn-sm" title="{{ 'labels.edit.label'|trans }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <a href="{{ path('remove_label', { uuid: label.uuid })}}" class="btn btn-outline-danger btn-sm" title="{{ 'labels.remove.label'|trans }}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

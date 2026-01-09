@@ -8,3 +8,6 @@ borrower_type:
   teacher: Lehrkraft
   other: Andere
 
+print_objective:
+  barcode: Barcode
+  shelfmark: Signatur

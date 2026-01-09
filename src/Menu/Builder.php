@@ -59,6 +59,11 @@ readonly class Builder {
                 'route' => 'admin_books'
             ])
                 ->setExtra('icon', 'fa fa-book-open');
+
+            $menu->addChild('labels.menu', [
+                'route' => 'labels'
+            ])
+                ->setExtra('icon', 'fa fa-barcode');
         }
 
         return $menu;

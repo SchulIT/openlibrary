@@ -1,0 +1,34 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'labels.edit.label'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.label'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('labels') }}">{{ 'labels.menu'|trans }}</a></li>
+        <li class="breadcrumb-item">{{ block('title') }} </li>
+        <li class="breadcrumb-item active">{{ label.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+
+    <div class="card">
+        <div class="card-header">{{ 'labels.edit.label'|trans }}</div>
+        <div class="card-body">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fas fa-save"></i> {{ 'actions.save'|trans }}
+        </button>
+
+        <a href="{{ path('labels') }}" class="btn btn-sm btn-secondary">
+            {{ 'actions.cancel'|trans }}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
