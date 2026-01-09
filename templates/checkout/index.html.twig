@@ -69,7 +69,7 @@
                     {% for checkout in checkouts %}
                         <tr>
                             <td class="align-middle">
-                                {{ checkout.book.title }}
+                                <a href="{{ path('show_book', { uuid: checkout.book.uuid }) }}">{{ checkout.book.title }}</a>
 
                                 <span class="badge text-bg-primary">
                                     <i class="fas fa-barcode"></i> {{ checkout.book.barcodeId }}
@@ -98,7 +98,7 @@
                             </td>
                             <td class="align-middle">
                                 {% if checkout.borrower is not null %}
-                                    {{ checkout.borrower }}
+                                    <a href="{{ path('show_borrower', { uuid: checkout.borrower.uuid}) }}">{{ checkout.borrower }}</a>
                                 {% else %}
                                     <span class="badge text-bg-warning">{{ 'checkouts.borrower_removed'|trans }}</span>
                                 {% endif %}

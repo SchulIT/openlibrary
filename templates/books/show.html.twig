@@ -28,9 +28,13 @@
                                 {% set isOverdue = checkout.isOverdue(today) %}
                                 <div class="list-group-item {% if isOverdue %}list-group-item-danger{% endif %}">
                                     <h5 class="card-title">
-                                        {{ checkout.borrower.lastname }}, {{ checkout.borrower.firstname }}
+                                        {% if checkout.borrower is not null %}
+                                            <a href="{{ path('show_borrower', { uuid: checkout.borrower.uuid}) }}">{{ checkout.borrower.lastname }}, {{ checkout.borrower.firstname }}</a>
 
-                                        <span class="badge text-bg-primary">{{ checkout.borrower.barcodeId }}</span>
+                                            <span class="badge text-bg-primary">{{ checkout.borrower.barcodeId }}</span>
+                                        {% else %}
+                                            {{ 'checkouts.borrower_removed'|trans }}
+                                        {% endif %}
                                     </h5>
 
                                     <div>

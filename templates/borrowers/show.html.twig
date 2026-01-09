@@ -41,7 +41,7 @@
                                         </div>
                                         <div class="flex-fill">
                                             <h5 class="card-title">
-                                                {{ checkout.book.title }}
+                                                <a href="{{ path('show_book', { uuid: checkout.book.uuid}) }}">{{ checkout.book.title }}</a>
 
                                                 <span class="badge text-bg-primary">{{ checkout.book.barcodeId }}</span>
                                             </h5>
