@@ -55,4 +55,7 @@ class CsvImportRequest {
 
     #[Assert\NotBlank(allowNull: true)]
     public string|null $priceHeader = 'Preis';
+
+    #[Assert\NotBlank(allowNull: true)]
+    public string|null $shelfmarkHeader = 'Signatur';
 }

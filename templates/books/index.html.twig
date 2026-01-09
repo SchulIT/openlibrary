@@ -39,6 +39,12 @@
                         </form>
                     </div>
                     <div class="actions">
+                        {% if is_granted('import-books') %}
+                            <a href="{{ path('import_books') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-upload"></i> {{ 'books.import.label'|trans }}
+                            </a>
+                        {% endif %}
+
                         {% if is_granted('new-book') %}
                             <a href="{{ path('admin_books_add') }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i> {{ 'books.add.label'|trans }}

@@ -15,6 +15,7 @@ class BookVoter extends Voter {
     public const string EDIT = 'edit';
     public const string SHOW = 'show';
     public const string DELETE = 'delete';
+    public const string IMPORT = 'import-books';
 
     public function __construct(private readonly AccessDecisionManagerInterface $accessDecisionManager) {
 
@@ -24,6 +25,7 @@ class BookVoter extends Voter {
     protected function supports(string $attribute, mixed $subject): bool {
         return $attribute === self::NEW
             || $attribute === self::LIST
+            || $attribute === self::IMPORT
             || (in_array($attribute, [self::EDIT, self::DELETE, self::SHOW]) && $subject instanceof Book);
     }
 

@@ -71,6 +71,10 @@ readonly class CsvImporter {
                 $book->setPublisher($this->getColumnValue($record, $request->publisherHeader, false));
             }
 
+            if(!empty($request->shelfmarkHeader)) {
+                $book->setShelfmark($this->getColumnValue($record, $request->shelfmarkHeader, false));
+            }
+
             try {
                 $book->setIsbn($this->getColumnValue($record, $request->isbnHeader, true, 'Feld "ISBN" nicht vorhanden oder leer.'));
             } catch(CsvColumnException) {

@@ -69,6 +69,11 @@ class CsvImportRequestType extends AbstractType {
                 'label' => 'books.import.headers.price.label',
                 'help' => 'books.import.headers.price.help',
                 'required' => false
+            ])
+            ->add('shelfmarkHeader', TextType::class, [
+                'label' => 'books.import.headers.shelfmark.label',
+                'help' => 'books.import.headers.shelfmark.help',
+                'required' => false
             ]);
     }
 }

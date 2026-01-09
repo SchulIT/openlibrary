@@ -160,6 +160,15 @@ books:
             receipt_date:
                 label: Eingangsdatum-Spalte
                 help: Überschrift in der CSV-Datei, in der das Eingangsdatum notiert ist.
+            isbn:
+                label: ISBN-Spalte
+                help: Überschrift in der CSV-Datei, in der die ISBN-Nummer notiert ist.
+            price:
+                label: Preis-Spalte
+                help: Überschrift in der CSV-Datei, in der der Preis notiert ist.
+            shelfmark:
+                label: Signatur-Spalte
+                help: Überschrift in der CSV-Datei, in der die Signatur notiert ist.
             updated_at:
                 label: Letzte Änderung-Spalte
                 help: Optional. Überschrift in der CSV-Datei, in der das Datum der letzten Änderung notiert ist. Bei leeren Feldern wird der Wert nicht gesetzt. Wenn keine Überschrift angegeben wird, wird das Datum der letzten Änderung nicht importiert.
@@ -304,6 +313,7 @@ actions:
     checkout: Ausgeben
     return: Zurücknehmen
     download: Herunterladen
+    import: Importieren
 
 administration:
     menu: Verwaltung
