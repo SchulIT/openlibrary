@@ -1,0 +1,186 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('admin_books') }}">{{ 'books.menu'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ block('title') }} <span class="badge text-bg-primary">{{ book.barcodeId }}</span></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-md-9">
+                {% if book.checkouts|length == 0 %}
+                    <div class="bs-callout bs-callout-info mt-0">
+                        <h5>{{ 'info.label'|trans }}</h5>
+                        <p>{{ 'borrowers.checkouts.empty'|trans }}</p>
+                    </div>
+                {% else %}
+                    <div class="card">
+                        <div class="card-header">{{ 'borrowers.checkouts.label'|trans }}</div>
+
+                        <div class="list-group list-group-flush">
+                            {% for checkout in book.checkouts %}
+                                {% set isOverdue = checkout.isOverdue(today) %}
+                                <div class="list-group-item {% if isOverdue %}list-group-item-danger{% endif %}">
+                                    <h5 class="card-title">
+                                        {{ checkout.borrower.lastname }}, {{ checkout.borrower.firstname }}
+
+                                        <span class="badge text-bg-primary">{{ checkout.borrower.barcodeId }}</span>
+                                    </h5>
+
+                                    <div>
+                                        <div class="mb-1">
+                                            <i class="far fa-calendar-alt text-muted"></i> <i class="fas fa-arrow-right text-muted"></i> {{ checkout.createdAt|format_date }}
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <i class="far fa-calendar-alt text-muted"></i> <i class="fas fa-arrow-left text-muted"></i>
+
+                                            {% if checkout.end is null %}
+                                                <span class="badge text-bg-success">{{ 'checkouts.checked_out'|trans }}</span>
+                                            {% else %}
+                                                {{ checkout.end|format_date }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <span class="text-muted">{{ 'checkouts.expected_end'|trans }}</span>
+
+                                            {{ checkout.expectedEnd|format_date }}
+
+                                            {% if isOverdue %}
+                                                <span class="badge text-bg-danger">{{ 'checkouts.overdue'|trans }}</span>
+                                            {% endif %}
+
+                                            {% if checkout.wasReturnedLate %}
+                                                <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans }}</span>
+                                            {% endif %}
+                                        </div>
+
+                                        {% if checkout.comment is not empty %}
+                                            <div class="mb-1">
+                                                <p>{{ checkout.comment|nl2br }}</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">{{ book.title }} <span class="badge text-bg-primary">{{ book.barcodeId }}</span></div>
+                    <div class="card-body">
+
+                        {% if book.coverFileName is not empty %}
+                            <img src="{{ vich_uploader_asset(book, 'cover') }}" class="img-fluid" alt="{{ book.title }}">
+                        {% endif %}
+
+                        <div class="mb-2">
+                            <i class="fas fa-barcode text-muted" title="{{ 'books.barcode_id.label'|trans }}"></i> {{ book.barcodeId }}
+                        </div>
+                        <div class="mb-2">
+                            <i class="fas fa-barcode text-muted" title="{{ 'books.isbn.label'|trans }}"></i> {{ book.isbn }}
+                        </div>
+                        {% if book.shelfmark is not empty %}
+                        <div class="mb-2">
+                            <i class="fas fa-barcode text-muted" title="{{ 'books.shelfmark.label'|trans }}"></i> {{ book.shelfmark }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-2">
+                            <ul class="list-unstyled mb-0">
+                                {% for author in book.authors %}
+                                <li>
+                                    <i class="fas fa-user text-muted" title="{{ 'books.authors.label'|trans }}"></i> {{ author }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% if book.series is not empty %}
+                            <div class="mb-2">
+                                <i class="fas fa-book-open text-muted" title="{{ 'books.series.label'|trans }}"></i> {{ book.series }}
+                            </div>
+                        {% endif %}
+
+                        {% if book.publisher is not empty %}
+                            <div class="mb-2">
+                                <i class="fa-solid fa-building text-muted" title="{{ 'books.publisher.label'|trans }}"></i> {{ book.publisher }}
+                            </div>
+                        {% endif %}
+
+                        {% if book.year is not empty %}
+                            <div class="mb-2">
+                                <i class="fas fa-calendar-alt text-muted" title="{{ 'books.year.label'|trans }}"></i> {{ book.year }}
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-2">
+                            <i class="fas fa-tag text-muted" title="{{ 'books.category'|trans }}"></i> {{ book.category.name }}
+                        </div>
+
+                        {% if book.topic is not empty %}
+                        <div class="mb-2">
+                            <i class="fas fa-tags text-muted" title="{{ 'books.topic.label'|trans }}"></i> {{ book.topic }}
+                        </div>
+                        {% endif %}
+
+                        {% if book.receiptDate is not empty %}
+                            <div class="mb-2">
+                                <i class="fa-solid fa-receipt text-muted" title="{{ 'books.receipt_date.label'|trans }}"></i> {{ book.receiptDate|format_date }}
+                            </div>
+                        {% endif %}
+
+                        {% if book.price is not empty %}
+                            <div class="mb-2">
+                                <i class="fa-solid fa-money-bill text-muted" title="{{ 'books.price.label'|trans }}"></i> {{ book.price|format_currency('EUR') }}
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-2">
+                            <span class="text-muted">{{ 'books.borrowable.label'|trans }}</span>
+                            <span class="badge text-bg-primary">
+                                {% if book.borrowable %}<i class="fas fa-check"></i>{% else %}<i class="fas fa-times"></i>{% endif %}
+                            </span>
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="text-muted">{{ 'books.listed.label'|trans }}</span>
+                            <span class="badge text-bg-primary">
+                                {% if book.listed %}<i class="fas fa-check"></i>{% else %}<i class="fas fa-times"></i>{% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if book.comment is not empty %}
+                    <div class="card-body border-top">
+                        <p>{{ book.comment|nl2br }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% set canEdit = is_granted('edit', book) %}
+                    {% set canRemove = is_granted('delete', book) %}
+
+                    {% if canEdit or canRemove %}
+                        <div class="card-footer">
+                            {% if canEdit %}
+                                <a href="{{ path('admin_books_edit', { uuid: book.uuid }) }}" class="btn btn-outline-primary btn-sm" title="{{ 'books.edit.label'|trans }}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
