@@ -29,14 +29,24 @@ dashboard:
 
     checkouts:
         active:
-            title: "Aktive Ausleihen für %lastname%, %firstname%"
+            title: "Aktive Ausleihen für {lastname%, %firstname}"
             overdue: Abgabe überfällig
 
 books:
     menu: Bücher
 
-    count: "%count% Bücher"
-    limit: "%count% Bücher"
+    count: >-
+        { count, plural,
+            =0    { # Bücher }
+            =1    { # Buch }
+            other { # Bücher }
+        }
+    limit: >-
+        { count, plural,
+            =0    { # Bücher }
+            =1    { # Buch }
+            other { # Bücher }
+        }
     views:
         table: Tabelle
         grid: Gitter
@@ -178,7 +188,12 @@ browse:
 
 categories:
     menu: Kategorien
-    count: '%count% Kategorien'
+    count: >-
+        { count, plural,
+            =0    { # Kategorien }
+            =1    { # Kategorie }
+            other { # Kategorien }
+        }
 
     name: Name
     abbreviation: Kürzel
@@ -209,7 +224,7 @@ categories:
 
 borrowers:
     menu: Ausleiher
-    count: '%count% Ausleiher'
+    count: '{count} Ausleiher'
 
     type: Art
     firstname: Vorname
@@ -231,7 +246,7 @@ borrowers:
             placeholder: Art auswählen
         delimiter: Trennzeichen
         submit: Importieren
-        success: "Es wurden %added% Ausleiher hinzugefügt, %updated% aktualisiert und %removed% gelöscht. %notRemoved% Ausleiher konnten aufgrund aktiver Ausleihen nicht gelöscht werden."
+        success: "Es wurden {added% Ausleiher hinzugefügt, %updated% aktualisiert und %removed% gelöscht. %notRemoved} Ausleiher konnten aufgrund aktiver Ausleihen nicht gelöscht werden."
         remove:
             label: Nicht vorhandene Ausleiher löschen
             help: Alle Ausleiher, die nicht in der CSV-Datei enthalten sind, werden aus dem System gelöscht. Falls noch Ausleihen aktiv sind, wird der Ausleiher nicht gelöscht.
@@ -267,8 +282,18 @@ users:
 
 checkouts:
     menu: Ausleihen
-    count: '%count% Ausleihen'
-    limit: '%count% Ausleihen'
+    count: >-
+        { count, plural,
+            =0    { # Ausleihen }
+            =1    { # Ausleihe }
+            other { # Ausleihen }
+        }
+    limit: >-
+        { count, plural,
+            =0    { # Ausleihen }
+            =1    { # Ausleihe }
+            other { # Ausleihen }
+        }
 
     borrower: Entleiher
     borrower_removed: Entleiher gelöscht
@@ -282,7 +307,11 @@ checkouts:
     accepted_by: Zurückgenommen von
 
     overdue: Rückgabe überfällig
-    late_return: Verspätete Rückgabe (%count% Tag(e))
+    late_return: >-
+        { count, plural,
+            =1    { Verspätete Rückgabe (# Tag) }
+            other { Verspätete Rückgabe (# Tage) }
+        }
     checked_out: noch ausgeliehen
 
     add:
@@ -334,7 +363,12 @@ empty: leer
 
 labels:
     menu: Etiketten
-    count: '%count% Etiketten'
+    count: >-
+        { count, plural,
+            =0    { # Etiketten }
+            =1    { # Etikett }
+            other { # Etiketten }
+        }
 
     name: Name
     description: Beschreibung
@@ -376,7 +410,7 @@ labels:
         success: Etikettenvorlage erfolgreich aktualisiert
     remove:
         label: Etikettenvorlage löschen
-        confirm: 'Soll die Etikettenvorlage "%name%" wirklich gelöscht werden? Anschließend können keine Etiketten mehr mit dieser Vorlage gedruckt werden.'
+        confirm: 'Soll die Etikettenvorlage "{name}" wirklich gelöscht werden? Anschließend können keine Etiketten mehr mit dieser Vorlage gedruckt werden.'
         success: Etikettenvorlage erfolgreich gelöscht
 
     download:
