@@ -14,6 +14,7 @@ class CheckoutVoter extends Voter {
     public const string LIST = 'list-checkouts';
     public const string CHECKOUT_ANY = 'checkout-any';
     public const string EDIT = 'edit';
+    public const string SHOW = 'show';
     public const string DELETE = 'delete';
 
     public function __construct(
@@ -26,7 +27,7 @@ class CheckoutVoter extends Voter {
     protected function supports(string $attribute, mixed $subject): bool {
         return $attribute === self::CHECKOUT_ANY
             || $attribute === self::LIST
-            || ($subject instanceof Checkout && in_array($attribute, [ self::EDIT, self::DELETE]));
+            || ($subject instanceof Checkout && in_array($attribute, [ self::EDIT, self::DELETE, self::SHOW]));
     }
 
     #[Override]
@@ -37,6 +38,7 @@ class CheckoutVoter extends Voter {
                 $this->accessDecisionManager->decide($token, ['ROLE_LENDER']);
 
             case self::EDIT:
+            case self::SHOW:
                 return $this->accessDecisionManager->decide($token, ['ROLE_LENDER']);
 
             case self::DELETE:

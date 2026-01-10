@@ -148,8 +148,14 @@
                                 {{ checkout.comment }}
                             </td>
                             <td class="align-middle">
+                                {% if is_granted('show', checkout) %}
+                                    <a href="{{ path('show_checkout', { uuid: checkout.uuid }) }}" class="btn btn-outline-primary btn-sm" title="{{ 'checkouts.show.label'|trans }}">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                {% endif %}
+
                                 {% if is_granted('edit', checkout) %}
-                                    <a href="{{ path('edit_checkout', { uuid: checkout.uuid }) }}" class="btn btn-outline-primary btn-sm">
+                                    <a href="{{ path('edit_checkout', { uuid: checkout.uuid }) }}" class="btn btn-outline-primary btn-sm" title="{{ 'checkouts.edit.label'|trans }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 {% endif %}

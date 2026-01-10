@@ -1,0 +1,108 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ 'checkouts.show.label'|trans }}{% endblock %}
+
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.menu'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('checkouts') }}">{{ 'checkouts.menu'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ path('show_book', { uuid: checkout.book.uuid }) }}">{{ checkout.book.title }}</a>
+
+            <span class="badge text-bg-primary">
+                <i class="fas fa-barcode"></i> {{ checkout.book.barcodeId }}
+            </span>
+        </div>
+
+        <table class="table table-striped">
+            <colgroup>
+                <col class="column-lg">
+                <col>
+            </colgroup>
+
+            <tbody>
+            <tr>
+                <td>{{ 'checkouts.book'|trans }}</td>
+                <td>
+                    <a href="{{ path('show_book', { uuid: checkout.book.uuid }) }}">{{ checkout.book.title }}</a>
+
+                    <span class="badge text-bg-primary">
+                        <i class="fas fa-barcode"></i> {{ checkout.book.barcodeId }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'checkouts.borrower'|trans }}</td>
+                <td>
+                    {% if checkout.borrower is not null %}
+                        <a href="{{ path('show_borrower', { uuid: checkout.borrower.uuid}) }}">{{ checkout.borrower }}</a>
+                    {% else %}
+                        <span class="badge text-bg-warning">{{ 'checkouts.borrower_removed'|trans }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'checkouts.start'|trans }}</td>
+                <td>{{ checkout.start|format_datetime }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'checkouts.expected_end'|trans }}</td>
+                <td>{{ checkout.expectedEnd|format_date }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'checkouts.end'|trans }}</td>
+                <td>
+                    {% if checkout.end is not null %}
+                        {{ checkout.end|format_date }}
+
+                        {% if checkout.wasReturnedLate %}
+                            <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans({'%count%': checkout.lateDays}) }}</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge text-bg-secondary">{{ 'checkouts.end_open'|trans }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'checkouts.accepted_by'|trans }}</td>
+                <td>{{ checkout.acceptedBy }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'checkouts.comment'|trans }}</td>
+                <td>{{ checkout.comment|nl2br }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'common.created_by'|trans }}</td>
+                <td>{{ checkout.createdBy }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'common.created_at'|trans }}</td>
+                <td>{{ checkout.createdAt|format_datetime }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'common.updated_by'|trans }}</td>
+                <td>{{ checkout.updatedBy }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'common.updated_at'|trans }}</td>
+                <td>{{ checkout.updatedAt|format_datetime }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="card-footer">
+            {% if is_granted('edit', checkout) %}
+                <a href="{{ path('edit_checkout', { uuid: checkout.uuid }) }}" class="btn btn-outline-primary btn-sm" title="{{ 'checkouts.edit.label'|trans }}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

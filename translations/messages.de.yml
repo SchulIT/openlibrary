@@ -279,6 +279,7 @@ checkouts:
     end: Ende
     end_open: nicht zurückgegeben
     comment: Kommentar
+    accepted_by: Zurückgenommen von
 
     overdue: Rückgabe überfällig
     late_return: Verspätete Rückgabe (%count% Tag(e))
@@ -287,6 +288,12 @@ checkouts:
     add:
         label: Neue Ausleihe
 
+    edit:
+        label: Ausleihe bearbeiten
+        success: Ausleihe erfolgreich aktualisiert
+
+    show:
+        label: Ausleihe anzeigen
 
     tabs:
         general: Ausleihe
