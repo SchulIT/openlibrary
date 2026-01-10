@@ -31,7 +31,7 @@ readonly class Builder {
         $menu->addChild('browse.menu', [
             'route' => 'browse'
         ])
-            ->setExtra('icon', 'fa fa-book');
+            ->setExtra('icon', 'fa fa-search');
 
         if($this->authorizationChecker->isGranted(CheckoutVoter::LIST)) {
             $menu->addChild('checkouts.menu', [
