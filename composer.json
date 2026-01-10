@@ -13,6 +13,7 @@
         "doctrine/doctrine-bundle": "^2.18.2",
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "^3.6",
+        "dragonmantank/cron-expression": "^3.6",
         "easycorp/easyadmin-bundle": "^4.27.5",
         "gedmo/doctrine-extensions": "^3.22",
         "jbtronics/settings-bundle": "^3.1.2",
@@ -21,6 +22,7 @@
         "lightsaml2/lightsaml": ">=3.0.1",
         "lightsaml2/sp-bundle": "^5.0",
         "lightsaml2/symfony-bridge": "^6.0.0",
+        "lorisleiva/cron-translator": "^0.4.6",
         "phpdocumentor/reflection-docblock": "^5.6.6",
         "phpstan/phpdoc-parser": "^2.3",
         "psr/simple-cache": "^3.0",
@@ -43,7 +45,9 @@
         "symfony/process": "^7.4",
         "symfony/property-access": "^7.4",
         "symfony/property-info": "^7.4.1",
+        "symfony/rate-limiter": "^7.4",
         "symfony/runtime": "^7.4.1",
+        "symfony/scheduler": "*",
         "symfony/security-bundle": "^7.4",
         "symfony/serializer": "^7.4.2",
         "symfony/string": "^7.4",
@@ -66,7 +70,8 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "tbachert/spi": true
         },
         "bump-after-update": true,
         "sort-packages": true

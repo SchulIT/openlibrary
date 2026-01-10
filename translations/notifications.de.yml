@@ -1,0 +1,5 @@
+greeting: Hallo %firstname% %lastname%,
+farewell: Gruß
+overdue_checkout:
+    subject: "[%app%] Überfällige Rückgabe"
+    text: beim folgenden Buch wurde die Ausleihdauer überschritten.

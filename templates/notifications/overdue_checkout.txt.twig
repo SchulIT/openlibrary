@@ -1,0 +1,11 @@
+{{ 'greeting'|trans({'%firstname%': borrower.firstname, '%lastname%': borrower.lastname}, 'notifications') }}
+
+{{ 'overdue_checkout.text'|trans({}, 'notifications') }}
+
+{{ 'books.barcode_id.label'|trans }}: {{ book.barcodeId }}
+{{ 'books.title'|trans }}: {{ book.title }}
+{{ 'books.isbn.label'|trans }}: {{ book.isbn }}
+{{ 'checkouts.start'|trans }}: {{ checkout.start|format_datetime }}
+{{ 'checkouts.expected_end'|trans }} {{ checkout.expectedEnd|format_date }}
+
+{{ 'farewell'|trans({}, 'notifications') }}

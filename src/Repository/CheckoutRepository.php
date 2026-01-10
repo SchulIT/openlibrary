@@ -90,7 +90,7 @@ class CheckoutRepository extends AbstractRepository implements CheckoutRepositor
         }
 
         if($onlyOverdue === true) {
-            $qb->andWhere('c.expectedEnd <= :today')
+            $qb->andWhere('c.expectedEnd < :today')
                 ->setParameter('today', $this->clock->now());
         }
 
@@ -117,9 +117,34 @@ class CheckoutRepository extends AbstractRepository implements CheckoutRepositor
             ->select('COUNT(c.id)')
             ->from(Checkout::class, 'c')
             ->where('c.end IS NULL')
-            ->andwhere('c.expectedEnd <= :today')
+            ->andwhere('c.expectedEnd < :today')
             ->setParameter('today', $today)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    #[Override]
+    public function findAllOverdue(): array {
+        return $this->em->createQueryBuilder()
+            ->select(['c', 'b'])
+            ->from(Checkout::class, 'c')
+            ->leftJoin('c.borrower', 'b')
+            ->where('c.end IS NULL')
+            ->andWhere('c.expectedEnd < :today')
+            ->setParameter('today', $this->clock->now())
+            ->getQuery()
+            ->getResult();
+    }
+
+    #[Override]
+    public function findOneById(int $id): ?Checkout {
+        return $this->em->createQueryBuilder()
+            ->select(['c', 'b'])
+            ->from(Checkout::class, 'c')
+            ->leftJoin('c.borrower', 'b')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

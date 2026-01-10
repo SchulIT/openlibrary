@@ -8,6 +8,8 @@ use DateTime;
 
 interface CheckoutRepositoryInterface {
 
+    public function findOneById(int $id): ?Checkout;
+
     /**
      * @param Borrower $borrower
      * @return Checkout[]
@@ -31,6 +33,11 @@ interface CheckoutRepositoryInterface {
      * @return PaginatedResult<Checkout>
      */
     public function find(PaginationQuery $paginationQuery, ?DateTime $start = null, ?DateTime $end = null, bool $onlyActive = false, bool $onlyOverdue = false, ?string $query = null): PaginatedResult;
+
+    /**
+     * @return Checkout[]
+     */
+    public function findAllOverdue(): array;
 
     public function persist(Checkout $checkout): void;
     public function remove(Checkout $checkout): void;
