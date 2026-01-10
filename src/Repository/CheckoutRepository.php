@@ -5,9 +5,15 @@ namespace App\Repository;
 use App\Entity\Borrower;
 use App\Entity\Checkout;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Override;
+use Symfony\Component\Clock\ClockInterface;
 
 class CheckoutRepository extends AbstractRepository implements CheckoutRepositoryInterface {
+
+    public function __construct(EntityManagerInterface $em, private readonly ClockInterface $clock) {
+        parent::__construct($em);
+    }
 
     public function persist(Checkout $checkout): void {
         $this->em->persist($checkout);
@@ -61,13 +67,13 @@ class CheckoutRepository extends AbstractRepository implements CheckoutRepositor
     }
 
     #[Override]
-    public function find(PaginationQuery $paginationQuery, ?DateTime $start = null, ?DateTime $end = null, bool $onlyActive = false, ?string $query = null): PaginatedResult {
+    public function find(PaginationQuery $paginationQuery, ?DateTime $start = null, ?DateTime $end = null, bool $onlyActive = false, bool $onlyOverdue = false, ?string $query = null): PaginatedResult {
         $qb = $this->em->createQueryBuilder()
             ->select(['c', 'b'])
             ->from(Checkout::class, 'c')
             ->leftJoin('c.borrower', 'b')
             ->leftJoin('c.book', 'bo')
-            ->orderBy('c.start', 'DESC');
+            ->orderBy('c.expectedEnd', 'DESC');
 
         if($start !== null) {
             $qb->andWhere('c.start >= :start')
@@ -81,6 +87,11 @@ class CheckoutRepository extends AbstractRepository implements CheckoutRepositor
 
         if($onlyActive === true) {
             $qb->andWhere('c.end IS NULL');
+        }
+
+        if($onlyOverdue === true) {
+            $qb->andWhere('c.expectedEnd <= :today')
+                ->setParameter('today', $this->clock->now());
         }
 
         if(!empty($query)) {

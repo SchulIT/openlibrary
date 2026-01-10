@@ -35,6 +35,11 @@ readonly class DateTimeQueryResolver implements ValueResolverInterface {
         $class = DateTimeInterface::class === $argument->getType() ? DateTimeImmutable::class : $argument->getType();
 
         $date = $class::createFromFormat($attribute->format, $value, $this->clock->now()->getTimezone());
+
+        if($date === false) {
+            $date = null;
+        }
+
         return [ $date ];
     }
 }
