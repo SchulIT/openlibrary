@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,6 +33,11 @@ class Checkout {
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $end;
+
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Gedmo\Blameable(field: 'end')]
+    private ?string $acceptedBy = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment;
@@ -88,6 +94,15 @@ class Checkout {
         return $this;
     }
 
+    public function getAcceptedBy(): ?string {
+        return $this->acceptedBy;
+    }
+
+    public function setAcceptedBy(?string $acceptedBy): Checkout {
+        $this->acceptedBy = $acceptedBy;
+        return $this;
+    }
+
     public function getComment(): ?string {
         return $this->comment;
     }
@@ -119,5 +134,12 @@ class Checkout {
         return $this->expectedEnd < $this->end;
     }
 
+    public function lateDays(): int {
+        if($this->end === null) {
+            return 0;
+        }
 
+        $diff = $this->expectedEnd->diff($this->end);
+        return $diff->days;
+    }
 }
