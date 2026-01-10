@@ -2,8 +2,8 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\LabelTemplate;
 use Override;
-use PhpParser\Node\Stmt\Label;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -26,7 +26,7 @@ class LabelVoter extends Voter {
     protected function supports(string $attribute, mixed $subject): bool {
         return $attribute === self::LIST
             || $attribute === self::NEW
-            || (in_array($attribute, [self::EDIT, self::DELETE, self::SHOW]) && $subject instanceof Label);
+            || (in_array($attribute, [self::EDIT, self::DELETE, self::SHOW]) && $subject instanceof LabelTemplate);
     }
 
     #[Override]

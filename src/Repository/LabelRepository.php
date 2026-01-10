@@ -12,6 +12,15 @@ class LabelRepository extends AbstractRepository implements LabelRepositoryInter
         ]);
     }
 
+    public function find(PaginationQuery $paginationQuery): PaginatedResult {
+        $qb = $this->em->createQueryBuilder()
+            ->select('l')
+            ->from(LabelTemplate::class, 'l')
+            ->orderBy('l.name', 'asc');
+
+        return PaginatedResult::fromQueryBuilder($qb, $paginationQuery);
+    }
+
     public function persist(LabelTemplate $label): void {
         $this->em->persist($label);
         $this->em->flush();

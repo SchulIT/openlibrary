@@ -65,6 +65,24 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="card-footer">
+                <div class="d-flex">
+                    <div class="flex-fill align-self-center">
+                        {{ 'labels.count'|trans({'%count%': labels.totalCount}) }}
+                    </div>
+
+                    <div class="ms-auto">
+                        {% include '@Common/includes/pagination.html.twig' with {
+                            currentFilters: { },
+                            currentPage: labels.page,
+                            lastPage: labels.totalPages,
+                            paginationPath: 'labels',
+                            showAlwaysFirstAndLast: true
+                        } %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
