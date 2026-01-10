@@ -30,6 +30,7 @@ class BookRepository extends AbstractTransactionalRepository implements BookRepo
                     'b.isbn LIKE :searchQuery',
                     'b.shelfmark LIKE :searchQuery',
                     'b.topic LIKE :searchQuery',
+                    'b.barcodeId LIKE :searchQuery',
                 )
             )
                 ->setParameter('searchQuery', '%' . $searchQuery . '%');
