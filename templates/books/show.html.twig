@@ -62,7 +62,7 @@
                                             {% endif %}
 
                                             {% if checkout.wasReturnedLate %}
-                                                <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans }}</span>
+                                                <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans({'%count%': checkout.lateDays}) }}</span>
                                             {% endif %}
                                         </div>
 

@@ -90,7 +90,7 @@
                                     {{ checkout.end|format_date }}
 
                                     {% if checkout.wasReturnedLate %}
-                                        <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans }}</span>
+                                        <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans({'%count%': checkout.lateDays}) }}</span>
                                     {% endif %}
                                 {% else %}
                                     <span class="badge text-bg-secondary">{{ 'checkouts.end_open'|trans }}</span>

@@ -69,6 +69,10 @@
                                                     {% if isOverdue %}
                                                         <span class="badge text-bg-danger">{{ 'checkouts.overdue'|trans }}</span>
                                                     {% endif %}
+
+                                                    {% if checkout.wasReturnedLate %}
+                                                        <span class="badge text-bg-warning">{{ 'checkouts.late_return'|trans({'%count%': checkout.lateDays}) }}</span>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
