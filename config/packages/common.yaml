@@ -16,3 +16,10 @@ common:
         app_icon: 'fas fa-book-open'
         saml_cert_file: '%sp_cert_file%'
         role_hierarchy: '%security.role_hierarchy.roles%'
+
+services:
+    SchulIT\CommonBundle\Monolog\DatabaseHandler:
+        autoconfigure: true
+        autowire: true
+        arguments:
+            $connection: '@doctrine.dbal.logger_connection'
