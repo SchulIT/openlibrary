@@ -24,7 +24,7 @@ readonly class SendOverdueCheckoutEmailNotificationMessageHandler {
 
     }
 
-    public function __invoke(SendOverdueCheckoutEmailNotificationMessage $message): mixed {
+    public function __invoke(SendOverdueCheckoutEmailNotificationMessage $message): string|null {
         $checkout = $this->checkoutRepository->findOneById($message->checkoutId);
 
         if($checkout === null) {
@@ -49,6 +49,6 @@ readonly class SendOverdueCheckoutEmailNotificationMessageHandler {
 
         $this->mailer->send($mail);
 
-        return 'SENT';
+        return null;
     }
 }
