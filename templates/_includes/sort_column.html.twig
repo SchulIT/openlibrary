@@ -1,0 +1,18 @@
+{% set class = "text-light" %}
+{% set icon = "fa-sort" %}
+{% set currentFilters = currentFilters|merge({sort: column }) %}
+
+{% if column == orderBy.columnName %}
+    {% if orderBy.order == 'asc' %}
+        {% set currentFilters = currentFilters|merge({order: 'desc'}) %}
+        {% set icon = 'fa-sort-asc' %}
+    {% else %}
+        {% set currentFilters = currentFilters|merge({order: 'asc'}) %}
+        {% set icon = 'fa-sort-desc' %}
+    {% endif %}
+    {% set class = "text-primary" %}
+{% endif %}
+
+<a href="{{ path(path, currentFilters) }}" class="{{ class }} ms-1">
+    <i class="fas {{ icon }}"></i>
+</a>

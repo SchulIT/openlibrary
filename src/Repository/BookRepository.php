@@ -4,9 +4,19 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Entity\Category;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 
 class BookRepository extends AbstractTransactionalRepository implements BookRepositoryInterface {
+
+    public const array AllowedOrderByColumns = [
+        'title',
+        'barcode',
+        'shelfmark',
+        'isbn'
+    ];
+
+    public const string DefaultOrderByColumn = 'title';
 
     #[Override]
     public function findOneByBarcodeId(string $barcodeId): ?Book {
@@ -16,11 +26,13 @@ class BookRepository extends AbstractTransactionalRepository implements BookRepo
     }
 
     #[Override]
-    public function find(PaginationQuery $paginationQuery, ?string $searchQuery = null, ?Category $category = null, bool $onlyListed = false): PaginatedResult {
+    public function find(PaginationQuery $paginationQuery, OrderBy $orderBy, ?string $searchQuery = null, ?Category $category = null, bool $onlyListed = false): PaginatedResult {
         $qb = $this->em->createQueryBuilder()
             ->select(['b'])
-            ->from(Book::class, 'b')
-            ->orderBy('b.title', 'ASC');
+            ->from(Book::class, 'b');
+
+        $this->applyOrderBy($qb, $orderBy, 'b');
+
 
         if(!empty($searchQuery)) {
             $qb->andWhere(
@@ -45,7 +57,7 @@ class BookRepository extends AbstractTransactionalRepository implements BookRepo
             $qb->andWhere('b.isListed = true');
         }
 
-        return PaginatedResult::fromQueryBuilder($qb, $paginationQuery);
+        return PaginatedResult::fromQueryBuilder($qb, $paginationQuery, $orderBy);
     }
 
     #[Override]
@@ -74,5 +86,22 @@ class BookRepository extends AbstractTransactionalRepository implements BookRepo
             ->from(Book::class, 'b')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    private function applyOrderBy(QueryBuilder $qb, OrderBy $orderBy, string $prefix): QueryBuilder {
+        $columnName = match ($orderBy->columnName) {
+            'title' => 'title',
+            'barcode' => 'barcodeId',
+            'shelfmark' => 'shelfmark',
+            'isbn' => 'isbn',
+            default => self::DefaultOrderByColumn
+        };
+
+        $qb->orderBy(
+            sprintf('%s.%s', $prefix, $columnName),
+            $orderBy->order
+        );
+
+        return $qb;
     }
 }

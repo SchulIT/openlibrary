@@ -2,8 +2,11 @@
 
 namespace App\Controller\Book;
 
+use App\Http\ValueResolver\MapOrderByQueryParameter;
+use App\Repository\BookRepository;
 use App\Repository\BookRepositoryInterface;
 use App\Repository\CategoryRepositoryInterface;
+use App\Repository\OrderBy;
 use App\Repository\PaginationQuery;
 use App\Security\Voter\BookVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +20,7 @@ class IndexAction extends AbstractController {
     public function __invoke(
         BookRepositoryInterface $bookRepository,
         CategoryRepositoryInterface $categoryRepository,
+        #[MapOrderByQueryParameter(allowedColumnNames: BookRepository::AllowedOrderByColumns, defaultColumnName: 'title')] OrderBy $orderBy,
         #[MapQueryParameter] int $page = 1,
         #[MapQueryParameter] int $limit = 25,
         #[MapQueryParameter(filter: FILTER_DEFAULT, flags: FILTER_FLAG_EMPTY_STRING_NULL | FILTER_NULL_ON_FAILURE)] string|null $query = null,
@@ -24,7 +28,7 @@ class IndexAction extends AbstractController {
     ): Response {
         $this->denyAccessUnlessGranted(BookVoter::LIST);
 
-        $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), $query);
+        $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), $orderBy, $query);
         $categories = $categoryRepository->findAll();
         $category = null;
 

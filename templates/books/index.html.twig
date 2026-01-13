@@ -10,6 +10,12 @@
 {% endblock %}
 
 {% block content %}
+    {% set currentFilters = {
+        uuid: category != null ? category.abbreviation : null,
+        limit: limit,
+        query: query
+    } %}
+
     <div class="container-fluid px-0">
         <div class="card">
             <div class="card-header">
@@ -60,12 +66,48 @@
 
                         <thead>
                         <tr>
-                            <th>{{ 'books.barcode_id.label'|trans }}</th>
+                            <th>
+                                {{ 'books.barcode_id.label'|trans }}
+
+                                {% include '_includes/sort_column.html.twig' with {
+                                    column: 'barcode',
+                                    currentFilters: currentFilters,
+                                    orderBy: books.orderBy,
+                                    path: 'admin_books'
+                                } only %}
+                            </th>
                             <th>{{ 'books.cover.label'|trans }}</th>
-                            <th>{{ 'books.title'|trans }}</th>
+                            <th>
+                                {{ 'books.title'|trans }}
+
+                                {% include '_includes/sort_column.html.twig' with {
+                                    column: 'title',
+                                    currentFilters: currentFilters,
+                                    orderBy: books.orderBy,
+                                    path: 'admin_books'
+                                } only %}
+                            </th>
                             <th>{{ 'books.series.label'|trans }}</th>
-                            <th>{{ 'books.isbn.label'|trans }}</th>
-                            <th>{{ 'books.shelfmark.label'|trans }}</th>
+                            <th>
+                                {{ 'books.isbn.label'|trans }}
+
+                                {% include '_includes/sort_column.html.twig' with {
+                                    column: 'isbn',
+                                    currentFilters: currentFilters,
+                                    orderBy: books.orderBy,
+                                    path: 'admin_books'
+                                } only %}
+                            </th>
+                            <th>
+                                {{ 'books.shelfmark.label'|trans }}
+
+                                {% include '_includes/sort_column.html.twig' with {
+                                    column: 'shelfmark',
+                                    currentFilters: currentFilters,
+                                    orderBy: books.orderBy,
+                                    path: 'admin_books'
+                                } only %}
+                            </th>
                             <th>{{ 'books.category'|trans }}</th>
                             <th></th>
                         </tr>
@@ -136,11 +178,7 @@
 
                         <div class="ms-auto">
                             {% include '@Common/includes/pagination.html.twig' with {
-                                currentFilters: {
-                                    uuid: category != null ? category.abbreviation : null,
-                                    limit: limit,
-                                    query: query
-                                },
+                                currentFilters: currentFilters,
                                 currentPage: books.page,
                                 paginationPath: 'admin_books',
                                 lastPage: books.totalPages,

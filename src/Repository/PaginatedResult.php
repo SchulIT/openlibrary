@@ -30,12 +30,15 @@ class PaginatedResult implements IteratorAggregate {
      * @param int $totalCount
      * @param int $page
      * @param int $limit
+     * @param OrderBy|null $orderBy
      */
     public function __construct(
         public Traversable $iterator,
         public int $totalCount,
         public int $page,
-        public int $limit) { }
+        public int $limit,
+        public OrderBy|null $orderBy
+    ) { }
 
     #[Override]
     public function getIterator(): Traversable {
@@ -45,29 +48,32 @@ class PaginatedResult implements IteratorAggregate {
     /**
      * @param Query $query
      * @param PaginationQuery $paginationQuery
+     * @param OrderBy|null $orderBy
      * @return PaginatedResult<T>
      * @throws Exception
      */
-    public static function fromQuery(Query $query, PaginationQuery $paginationQuery): PaginatedResult {
+    public static function fromQuery(Query $query, PaginationQuery $paginationQuery, OrderBy|null $orderBy = null): PaginatedResult {
         $paginator = new Paginator($query, fetchJoinCollection: true);
         return new PaginatedResult(
             $paginator->getIterator(),
             $paginator->count(),
             $paginationQuery->page,
-            $paginationQuery->limit
+            $paginationQuery->limit,
+            $orderBy
         );
     }
 
     /**
      * @param QueryBuilder $qb
      * @param PaginationQuery $paginationQuery
+     * @param OrderBy|null $orderBy
      * @return PaginatedResult<T>
      * @throws Exception
      */
-    public static function fromQueryBuilder(QueryBuilder $qb, PaginationQuery $paginationQuery): PaginatedResult {
+    public static function fromQueryBuilder(QueryBuilder $qb, PaginationQuery $paginationQuery, OrderBy|null $orderBy = null): PaginatedResult {
         $qb->setMaxResults($paginationQuery->limit)
             ->setFirstResult($paginationQuery->getOffset());
 
-        return self::fromQuery($qb->getQuery(), $paginationQuery);
+        return self::fromQuery($qb->getQuery(), $paginationQuery, $orderBy);
     }
 }

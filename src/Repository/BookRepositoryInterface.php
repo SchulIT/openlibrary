@@ -11,12 +11,13 @@ interface BookRepositoryInterface extends TransactionalRepositoryInterface {
 
     /**
      * @param PaginationQuery $paginationQuery
+     * @param OrderBy $orderBy
      * @param string|null $searchQuery
      * @param Category|null $category
      * @param bool $onlyListed
      * @return PaginatedResult<Book>
      */
-    public function find(PaginationQuery $paginationQuery, ?string $searchQuery = null, ?Category $category = null, bool $onlyListed = false): PaginatedResult;
+    public function find(PaginationQuery $paginationQuery, OrderBy $orderBy, ?string $searchQuery = null, ?Category $category = null, bool $onlyListed = false): PaginatedResult;
 
     /**
      * @return Book[]
