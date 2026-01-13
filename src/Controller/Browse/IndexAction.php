@@ -3,8 +3,10 @@
 namespace App\Controller\Browse;
 
 use App\Checkout\CheckoutManager;
+use App\Repository\BookRepository;
 use App\Repository\BookRepositoryInterface;
 use App\Repository\CategoryRepositoryInterface;
+use App\Repository\OrderBy;
 use App\Repository\PaginationQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -29,7 +31,7 @@ class IndexAction extends AbstractController {
             $category = $categoryRepository->findOneByAbbreviation($categoryId);
         }
 
-        $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), $query, category: $category, onlyListed: true);
+        $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), new OrderBy(allowedColumnNames: BookRepository::AllowedOrderByColumns, columnName: 'title'), $query, category: $category, onlyListed: true);
 
         $checkoutStatus = [ ];
 
