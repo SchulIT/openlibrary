@@ -246,7 +246,7 @@ borrowers:
             placeholder: Art auswählen
         delimiter: Trennzeichen
         submit: Importieren
-        success: "Es wurden {added% Ausleiher hinzugefügt, %updated% aktualisiert und %removed% gelöscht. %notRemoved} Ausleiher konnten aufgrund aktiver Ausleihen nicht gelöscht werden."
+        success: "Es wurden {added} Ausleiher hinzugefügt, {updated} aktualisiert und {removed} gelöscht. {notRemoved} Ausleiher konnten aufgrund aktiver Ausleihen nicht gelöscht werden."
         remove:
             label: Nicht vorhandene Ausleiher löschen
             help: Alle Ausleiher, die nicht in der CSV-Datei enthalten sind, werden aus dem System gelöscht. Falls noch Ausleihen aktiv sind, wird der Ausleiher nicht gelöscht.
