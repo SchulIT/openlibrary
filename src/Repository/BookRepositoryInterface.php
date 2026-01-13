@@ -7,6 +7,8 @@ use App\Entity\Category;
 
 interface BookRepositoryInterface extends TransactionalRepositoryInterface {
 
+    public function findOneById(int $id): ?Book;
+
     public function findOneByBarcodeId(string $barcodeId): ?Book;
 
     /**

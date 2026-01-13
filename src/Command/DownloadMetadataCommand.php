@@ -2,47 +2,33 @@
 
 namespace App\Command;
 
-use App\Book\MetadataDownloader;
+use App\Book\DownloadMetadataMessage;
 use App\Repository\BookRepositoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand('app:book:metadata:download', description: 'Lädt die Metadaten aller Bücher im Bestand herunter.')]
 readonly class DownloadMetadataCommand {
 
-    public function __construct(private MetadataDownloader $downloader, private BookRepositoryInterface $bookRepository) {
+    public function __construct(
+        private BookRepositoryInterface $bookRepository,
+        private MessageBusInterface $messageBus
+    ) {
 
     }
 
-    public function __invoke(SymfonyStyle $ui, #[Option('Skips the first N books', 'skip')] int|null $skip = null): int {
+    public function __invoke(SymfonyStyle $io): int {
         $books = $this->bookRepository->findAll();
 
-        ProgressBar::setFormatDefinition('custom', ' %current%/%max% -- %message%');
-        $progressBar = new ProgressBar($ui, count($books));
-        $progressBar->setFormat('custom');
-        $progressBar->setMessage('');
-        $progressBar->start();
-        $i = 0;
+        $io->section('Füge alle Bücher in die Download-Warteschlange ein');
 
         foreach($books as $book) {
-            if($skip !== null && $i < $skip) {
-                $progressBar->advance();
-                $i++;
-                continue;
-            }
-            $progressBar->setMessage('Herunterladen ' . $book->getIsbn());
-            $this->downloader->downloadMetadata($book);
-
-            $progressBar->advance();
-            $i++;
-
-            sleep(2);
+            $this->messageBus->dispatch(new DownloadMetadataMessage($book->getId()));
         }
 
-        $progressBar->finish();
+        $io->success(sprintf('%d Bücher eingereiht - der Download läuft asynchron, um DoS zu verhindern', count($books)));
 
         return Command::SUCCESS;
     }

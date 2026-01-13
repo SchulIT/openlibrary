@@ -5,13 +5,24 @@ framework:
             limit: "%env(int:MAILER_LIMIT)%"
             interval: "%env(MAILER_INTERVAL)%"
 
+        metadata:
+            policy: 'fixed_window'
+            limit: 1
+            interval: '5 seconds'
+
     messenger:
+        failure_transport: failed
+
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             async: "%env(MESSENGER_TRANSPORT_DSN)%?queue_name=async"
+            metadata:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%?queue_name=metadata"
+                rate_limiter: metadata
             mail:
                 dsn: "%env(MESSENGER_TRANSPORT_DSN)%?queue_name=mail"
                 rate_limiter: mail
+            failed: 'doctrine://default?queue_name=failed'
 
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: mail

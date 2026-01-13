@@ -19,6 +19,13 @@ class BookRepository extends AbstractTransactionalRepository implements BookRepo
     public const string DefaultOrderByColumn = 'title';
 
     #[Override]
+    public function findOneById(int $id): ?Book {
+        return $this->em
+            ->getRepository(Book::class)
+            ->findOneBy(['id' => $id]);
+    }
+
+    #[Override]
     public function findOneByBarcodeId(string $barcodeId): ?Book {
         return $this->em
             ->getRepository(Book::class)
