@@ -13,7 +13,9 @@
     {% set currentFilters = {
         uuid: category != null ? category.abbreviation : null,
         limit: limit,
-        query: query
+        query: query,
+        sort: books.orderBy.columnName,
+        order: books.orderBy.order
     } %}
 
     <div class="container-fluid px-0">
