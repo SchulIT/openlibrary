@@ -1,4 +1,4 @@
-{% set class = "text-light" %}
+{% set class = "" %}
 {% set icon = "fa-sort" %}
 {% set currentFilters = currentFilters|merge({sort: column }) %}
 
@@ -10,9 +10,9 @@
         {% set currentFilters = currentFilters|merge({order: 'asc'}) %}
         {% set icon = 'fa-sort-desc' %}
     {% endif %}
-    {% set class = "text-primary" %}
+    {% set class = "active" %}
 {% endif %}
 
-<a href="{{ path(path, currentFilters) }}" class="{{ class }} ms-1">
+<a href="{{ path(path, currentFilters) }}" class="sort {{ class }} ms-1">
     <i class="fas {{ icon }}"></i>
 </a>
