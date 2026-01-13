@@ -426,3 +426,25 @@ labels:
             label: Offset
             help: Die hier angegebene Zahl bestimmt, wie viele Etiketten zu Beginn der ersten Seite leer gelassen werden. So kann bereits in Teilen verwendetes Etikettenpapier wiederverwendet werden.
 
+settings:
+    label: Einstellungen
+    app:
+        label: Allgemeine Einstellungen
+        custom_css:
+            label: Benutzerdefiniertes CSS
+            help: Hier kann benutzerdefiniertes CSS eingebunden werden, um die Software nach eigenen Wünschen einzufärben.
+    barcode:
+        label: Barcode
+
+        current_year: Aktuelles Jahr
+        current_sequence:
+            label: Sequenz-Nr.
+            help: In Kombination mit dem aktuellen Jahr ist diese Nummer die nächste verfügbare Nummer bei einem neuen Buch. Sie kann hier händisch geändert werden (nicht empfohlen!).
+
+
+    checkout:
+        label: Ausleihe
+
+        duration:
+            label: Ausleihdauer
+            help: Die standardmäßige Dauer (in Tagen) bei einer Ausleihe. Das Datum der erwarteten Rückgabe wird automatisch anhand dieses Parameters ausgefüllt.

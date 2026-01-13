@@ -27,6 +27,11 @@ class AdminMenuBuilder extends AbstractMenuBuilder {
             ->setExtra('pull-right', true);
 
         if($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+            $menu->addChild('settings.label', [
+                'route' => 'admin_settings'
+            ])
+                ->setExtra('icon', 'fas fa-cogs');
+
             $menu->addChild('messenger.label', [
                 'route' => 'zenstruck_messenger_monitor_dashboard'
             ])

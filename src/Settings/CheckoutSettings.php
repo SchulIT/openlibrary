@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CheckoutSettings {
     use SettingsTrait;
 
-    #[SettingsParameter(label: 'checkouts.settings.duration.label', description: 'checkouts.settings.duration.help', formType: IntType::class)]
+    #[SettingsParameter(label: 'settings.checkout.duration.label', description: 'settings.checkout.duration.help', type: IntType::class)]
     #[Assert\GreaterThan(0)]
     public int $defaultCheckoutDurationInDays = 30;
 }
