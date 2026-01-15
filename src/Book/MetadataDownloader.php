@@ -9,6 +9,7 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Uid\Uuid;
+use Throwable;
 
 readonly class MetadataDownloader {
 
@@ -27,9 +28,11 @@ readonly class MetadataDownloader {
             if ($this->crawler->supports($book->getIsbn())) {
                 $metadata = $this->crawler->crawl($book->getIsbn());
 
-                if(!empty($metadata->title)) {
-                    $book->setTitle($metadata->title);
+                if(empty($metadata->title)) {
+                    return; // not real data?!
                 }
+
+                $book->setTitle($metadata->title);
 
                 $book->setSubtitle($metadata->subtitle);
                 $book->setPublisher($metadata->publisher);
@@ -51,7 +54,7 @@ readonly class MetadataDownloader {
 
                 $this->bookRepository->persist($book);
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->logger->error($e->getMessage(), [
                 'exception' => $e
             ]);
