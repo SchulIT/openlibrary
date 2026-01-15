@@ -27,7 +27,10 @@ readonly class MetadataDownloader {
             if ($this->crawler->supports($book->getIsbn())) {
                 $metadata = $this->crawler->crawl($book->getIsbn());
 
-                $book->setTitle($metadata->title);
+                if(!empty($metadata->title)) {
+                    $book->setTitle($metadata->title);
+                }
+
                 $book->setSubtitle($metadata->subtitle);
                 $book->setPublisher($metadata->publisher);
                 $book->setYear($metadata->year);
