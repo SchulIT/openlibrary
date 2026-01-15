@@ -25,14 +25,14 @@ class AuthorStrategy implements StrategyInterface {
             return null;
         }
 
-        $pos = strpos($author->getName(), ',');
+        $pos = strpos($author, ',');
 
         if($pos !== false) {
-            $author = trim(mb_substr($author->getName(), 0, $pos));
+            $author = trim(mb_substr($author, 0, $pos));
         } else {
-            $pos = strrpos($author->getName(), ' ');
+            $pos = strrpos($author, ' ');
             if($pos !== false) {
-                $author = trim(mb_substr($author->getName(), $pos));
+                $author = trim(mb_substr($author, $pos));
             }
         }
 
