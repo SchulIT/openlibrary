@@ -33,7 +33,7 @@ class AddAction extends AbstractController {
             return $this->redirectToRoute('admin_categories');
         }
 
-        return $this->render('admin/categories/add.html.twig', [
+        return $this->render('categories/add.html.twig', [
             'form' => $form->createView(),
             'strategies' => $generator->getStrategies()
         ]);

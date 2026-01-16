@@ -19,7 +19,7 @@ class IndexAction extends AbstractController {
     ): Response {
         $categories = $categoryRepository->find(new PaginationQuery(page: $page), $query);
 
-        return $this->render('admin/categories/index.html.twig', [
+        return $this->render('categories/index.html.twig', [
             'categories' => $categories,
             'query' => $query
         ]);

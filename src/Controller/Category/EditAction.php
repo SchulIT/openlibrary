@@ -34,7 +34,7 @@ class EditAction extends AbstractController {
             return $this->redirectToRoute('admin_categories');
         }
 
-        return $this->render('admin/categories/edit.html.twig', [
+        return $this->render('categories/edit.html.twig', [
             'form' => $form->createView(),
             'strategies' => $generator->getStrategies()
         ]);

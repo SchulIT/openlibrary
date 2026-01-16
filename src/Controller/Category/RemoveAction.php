@@ -39,7 +39,7 @@ class RemoveAction extends AbstractController {
             return $this->redirectToRoute('admin_categories');
         }
 
-        return $this->render('admin/categories/remove.html.twig', [
+        return $this->render('categories/remove.html.twig', [
             'form' => $form->createView(),
             'category' => $category,
         ]);
