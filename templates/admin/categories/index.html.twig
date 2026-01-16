@@ -47,7 +47,7 @@
                     <colgroup>
                         <col class="column-md">
                         <col>
-                        <col class="column-sm">
+                        <col class="column-md">
                     </colgroup>
                     <thead>
                     <tr>
@@ -70,6 +70,12 @@
                                 {% if is_granted('edit', category) %}
                                     <a href="{{ path('admin_categories_edit', { uuid: category.uuid }) }}" class="btn btn-outline-primary btn-sm" title="{{ 'categories.edit.label'|trans }}">
                                         <i class="fas fa-edit"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if is_granted('delete', category) %}
+                                    <a href="{{ path('remove_category', { uuid: category.uuid }) }}" class="btn btn-outline-danger btn-sm" title="{{ 'categories.remove.label'|trans }}">
+                                        <i class="fas fa-trash"></i>
                                     </a>
                                 {% endif %}
                             </td>

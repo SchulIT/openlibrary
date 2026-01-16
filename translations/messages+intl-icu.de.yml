@@ -133,6 +133,7 @@ books:
 
     remove:
         label: Buch löschen
+        confirm: 'Soll das Buch "{title}" ({barcodeId}) und alle Ausleihen zu diesem Buch wirklich gelöscht werden?'
         success: Buch erfolgreich gelöscht
 
     import:
@@ -217,8 +218,10 @@ categories:
     remove:
         label: Kategorie löschen
         success: Kategorie erfolgreich gelöscht
-        error:
-            in_use: Es gibt noch Bücher, die dieser Kategorie zugeordnet sind. Bitte zunächst für diese Bücher eine neue Kategorie auswäheln.
+        confirm: 'Soll die Kategorie {name} wirklich gelöscht werden?'
+        category:
+            label: Neue Kategorie
+            help: Alle Bücher dieser Kategorie werden der ausgewählten Kategorie zugeordnet.
 
 
 
@@ -265,6 +268,7 @@ borrowers:
 
     remove:
         label: Ausleiher löschen
+        confirm: 'Soll {lastname}, {firstname} (ID: {barcodeId}) inkl. aller Ausleihen wirklich gelöscht werden?'
         success: Ausleiher erfolgreich gelöscht
 
 users:
@@ -320,6 +324,11 @@ checkouts:
     edit:
         label: Ausleihe bearbeiten
         success: Ausleihe erfolgreich aktualisiert
+
+    remove:
+        label: Ausleihe löschen
+        confirm: 'Soll die Ausleihe des Buches "{title}" ({barcodeId}) von {lastname}, {firstname} vom {date} wirklich gelöscht werden?'
+        success: Ausleihe erfolgreich gelöscht
 
     show:
         label: Ausleihe anzeigen

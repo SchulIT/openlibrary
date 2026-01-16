@@ -28,13 +28,14 @@ class IndexAction extends AbstractController {
     ): Response {
         $this->denyAccessUnlessGranted(BookVoter::LIST);
 
-        $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), $orderBy, $query);
         $categories = $categoryRepository->findAll();
         $category = null;
 
         if(!empty($categoryId)) {
             $category = $categoryRepository->findOneByAbbreviation($categoryId);
         }
+
+        $books = $bookRepository->find(new PaginationQuery(page: $page, limit: $limit), $orderBy, $query, $category);
 
         return $this->render('books/index.html.twig', [
             'books' => $books,

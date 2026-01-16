@@ -25,7 +25,7 @@ class RemoveAction extends AbstractController {
         $form = $this->createForm(ConfirmType::class, [], [
             'message' => 'labels.remove.confirm',
             'message_parameters' => [
-                '%name%' => $label->getName()
+                'name' => $label->getName()
             ]
         ]);
         $form->handleRequest($request);

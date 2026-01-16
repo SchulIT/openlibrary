@@ -24,5 +24,5 @@ interface CategoryRepositoryInterface {
 
     public function persist(Category $category): void;
 
-    public function remove(Category $category): void;
+    public function remove(Category $toRemove, Category $newCategory): void;
 }

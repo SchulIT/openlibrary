@@ -181,6 +181,12 @@
                                     <i class="fas fa-edit"></i>
                                 </a>
                             {% endif %}
+
+                            {% if canRemove %}
+                                <a href="{{ path('remove_book', { uuid: book.uuid }) }}" class="btn btn-outline-danger btn-sm" title="{{ 'books.remove.label'|trans }}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>

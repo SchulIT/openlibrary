@@ -92,7 +92,7 @@
                         <col class="column-md">
                         <col class="column-lg">
                         <col>
-                        <col class="column-md">
+                        <col class="column-140">
                     </colgroup>
                     <thead>
                     <tr>
@@ -157,6 +157,12 @@
                                 {% if is_granted('edit', checkout) %}
                                     <a href="{{ path('edit_checkout', { uuid: checkout.uuid }) }}" class="btn btn-outline-primary btn-sm" title="{{ 'checkouts.edit.label'|trans }}">
                                         <i class="fas fa-edit"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if is_granted('delete', checkout) %}
+                                    <a href="{{ path('remove_checkout', { uuid: checkout.uuid }) }}" class="btn btn-outline-danger btn-sm" title="{{ 'checkouts.remove.label'|trans }}">
+                                        <i class="fas fa-trash"></i>
                                     </a>
                                 {% endif %}
                             </td>

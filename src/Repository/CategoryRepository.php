@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Book;
 use App\Entity\Category;
 use Override;
 
@@ -52,8 +53,17 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
     }
 
     #[Override]
-    public function remove(Category $category): void {
-        $this->em->remove($category);
+    public function remove(Category $toRemove, Category $newCategory): void {
+        $this->em->createQueryBuilder()
+            ->update(Book::class, 'b')
+            ->set('b.category', ':new')
+            ->where('b.category = :old')
+            ->setParameter('new', $newCategory->getId())
+            ->setParameter('old', $toRemove->getId())
+            ->getQuery()
+            ->execute();
+
+        $this->em->remove($toRemove);
         $this->em->flush();
     }
 }

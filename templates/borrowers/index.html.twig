@@ -73,7 +73,7 @@
                         <col>
                         <col>
                         <col class="column-sm">
-                        <col class="column-md">
+                        <col class="column-140">
                     </colgroup>
                     <thead>
                     <tr>
@@ -115,6 +115,11 @@
                                 {% if is_granted('edit', borrower) %}
                                     <a href="{{ path('edit_borrower', { uuid: borrower.uuid }) }}" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-edit"></i>
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('delete', borrower) %}
+                                    <a href="{{ path('remove_borrower', { uuid: borrower.uuid }) }}" class="btn btn-outline-danger btn-sm" title="{{ 'borrowers.remove.label'|trans }}">
+                                        <i class="fas fa-trash"></i>
                                     </a>
                                 {% endif %}
                             </td>

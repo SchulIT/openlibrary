@@ -65,7 +65,16 @@
             {% if books|length > 0 %}
                 <div class="table-responsive">
                     <table class="table table-hover table-striped card-table">
-
+                        <colgroup>
+                            <col class="column-md">
+                            <col class="column-sm">
+                            <col>
+                            <col class="column-md">
+                            <col class="column-lg">
+                            <col class="column-md">
+                            <col class="column-md">
+                            <col class="column-140">
+                        </colgroup>
                         <thead>
                         <tr>
                             <th>
@@ -161,7 +170,7 @@
                                         </a>
                                     {% endif %}
                                     {% if is_granted('delete', book) %}
-                                        <a href="#" class="btn btn-outline-danger btn-sm">
+                                        <a href="{{ path('remove_book', { uuid: book.uuid }) }}" class="btn btn-outline-danger btn-sm">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     {% endif %}

@@ -114,6 +114,11 @@
                                     <i class="fas fa-edit"></i>
                                 </a>
                             {% endif %}
+                            {% if canRemove %}
+                                <a href="{{ path('remove_borrower', { uuid: borrower.uuid }) }}" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>
